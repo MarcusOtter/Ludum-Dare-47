@@ -15,6 +15,6 @@ public class MusicStarter : MonoBehaviour
 
     public async Task PlayNewMusicAsync(CustomAudioClip music, MusicFadeSettings overrideFadeSettings = null)
     {
-        await AudioPlayer.Instance.PlayNewMusicAsync(music, overrideFadeSettings);
+        await AudioPlayerSpawner.Instance.PlayNewMusicAsync(music, overrideFadeSettings);
     }
 }

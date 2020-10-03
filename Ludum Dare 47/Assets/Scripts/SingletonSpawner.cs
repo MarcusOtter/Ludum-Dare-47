@@ -4,9 +4,9 @@ public class SingletonSpawner : MonoBehaviour
 {
     private void Awake()
     {
-        if (AudioPlayer.Instance == null)
+        if (AudioPlayerSpawner.Instance == null)
         {
-            var gameObjectToSpawn = new GameObject(nameof(AudioPlayer), typeof(AudioPlayer));
+            var gameObjectToSpawn = new GameObject(nameof(AudioPlayerSpawner), typeof(AudioPlayerSpawner));
             Instantiate(gameObjectToSpawn);
         }
 

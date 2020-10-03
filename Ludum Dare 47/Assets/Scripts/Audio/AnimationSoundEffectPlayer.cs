@@ -6,6 +6,6 @@ public class AnimationSoundEffectPlayer : MonoBehaviour
     // Triggered by animation event 
     public void PlayCustomAudioClip(CustomAudioClip customAudioClip)
     {
-        AudioPlayer.Instance.PlaySoundEffect(customAudioClip);
+        AudioPlayerSpawner.Instance.PlaySoundEffect(customAudioClip);
     }
 }
