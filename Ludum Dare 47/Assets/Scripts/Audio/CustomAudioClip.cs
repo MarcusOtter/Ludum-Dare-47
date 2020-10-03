@@ -1,9 +1,11 @@
 ﻿using UnityEngine;
 
-
-[CreateAssetMenu(menuName = "Sound Effect")]
-public class SoundEffect : ScriptableObject
+[CreateAssetMenu(menuName = "Custom audio clip")]
+public class CustomAudioClip : ScriptableObject
 {
+    [Header("Miscellaneous")]
+    public bool IsMusic;
+
     [Header("Volume")]
     [SerializeField, Range(0, 1)] private float _baseVolume = 0.5f;
     [SerializeField] private bool _hasRandomVolume;
