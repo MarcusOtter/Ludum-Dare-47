@@ -21,7 +21,7 @@ public class GameManager : SingletonBehaviour<GameManager>
 
     private void Start()
     {
-        StartLevel();
+        //StartLevel();
     }
 
     public float GetTimeSinceLevelStart()
