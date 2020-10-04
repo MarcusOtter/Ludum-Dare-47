@@ -20,21 +20,20 @@ public class UIButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, I
     public void OnPointerEnter(PointerEventData eventData)
     {
         _hovering = true;
+        PlaySound(_onHoverSound);
     }
-    public void OnPointerDown(PointerEventData eventData)
-    {
-        PlaySound(_onClickDownSound);
-        LeanTween.cancel(gameObject);
-        LeanTween.scale(gameObject, _baseScale * _onClickScale, 0.3f).setEase(LeanTweenType.easeOutSine);
-    }
-
-
     public void OnPointerExit(PointerEventData eventData)
     {
         LeanTween.cancel(gameObject);
         LeanTween.scale(gameObject, _baseScale, 0.3f).setEase(LeanTweenType.easeOutSine);
         PlaySound(_onExitSound);
         _hovering = false;
+    }
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        PlaySound(_onClickDownSound);
+        LeanTween.cancel(gameObject);
+        LeanTween.scale(gameObject, _baseScale * _onClickScale, 0.3f).setEase(LeanTweenType.easeOutSine);
     }
 
     public void OnPointerUp(PointerEventData eventData)
