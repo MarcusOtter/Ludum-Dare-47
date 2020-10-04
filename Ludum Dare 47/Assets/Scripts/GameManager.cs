@@ -46,7 +46,7 @@ public class GameManager : SingletonBehaviour<GameManager>
             ? _defaultSpawnPosition
             : _replayInputs[_replayInputs.Count - 1].StartPosition.Add(y: -1.5f);
 
-        var spawnRotation = Quaternion.Euler(0, 0, -90f);
+        var spawnRotation = Quaternion.Euler(0, 0, 0);
 
         var spawnedBug = Instantiate(bugToInstantiate, spawnPosition, spawnRotation);
         OnLevelStarted?.Invoke();

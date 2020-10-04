@@ -31,7 +31,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (!_canMove) { return; } 
 
-        _rigidbody.velocity = transform.up * GetSpeed();
+        _rigidbody.velocity = transform.right * GetSpeed();
         _rigidbody.angularVelocity = -GetCurrentRotationDelta();
     }
 
@@ -67,7 +67,7 @@ public class PlayerMovement : MonoBehaviour
         _canMove = true;
         if (_input is ManualPlayerInput) return;
         transform.position = _input.GetStartPosition();
-        transform.rotation = Quaternion.Euler(0,0,-90f);
+        transform.rotation = Quaternion.Euler(0,0,0);
     }
 
     private float GetSpeed()
@@ -86,8 +86,7 @@ public class PlayerMovement : MonoBehaviour
             return;
         }
 
-        transform.position = _input.GetStartPosition();
-        transform.rotation = Quaternion.Euler(Vector3.forward * -90f);
+        ResetPosition();
 
         var autoPlayerInput = gameObject.AddComponent<AutomaticPlayerInput>();
         var replayInputs = manualInput.GetReplayInputs();
@@ -99,6 +98,7 @@ public class PlayerMovement : MonoBehaviour
         Destroy(manualInput);
 
         // Hard code is good code
+        // Also this needs to happen on all the layers of the children (e.g for caterpillar)
         gameObject.layer = 9;
 
         GameManager.Instance.EndLevel(replayInputs);
