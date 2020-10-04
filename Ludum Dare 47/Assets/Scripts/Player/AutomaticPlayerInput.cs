@@ -66,7 +66,13 @@ public class AutomaticPlayerInput : PlayerInput
 
     public override bool GetDash()
     {
-        return _dash;
+        //only returns true for one frame in the replay as it does 
+        if (_dash)
+        {
+            _dash = false;
+            return true;
+        }
+        return false;
     }
 
     public override Vector3 GetStartPosition()

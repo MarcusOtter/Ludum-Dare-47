@@ -1,8 +1,10 @@
 ﻿using UnityEngine;
+using System;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerMovement : MonoBehaviour
 {
+    public Action OnDash;
     public BugType BugType;
     
     [SerializeField] private float _movementSpeed = 2f;
@@ -12,28 +14,38 @@ public class PlayerMovement : MonoBehaviour
     private PlayerInput _input;
     private bool _canMove = true;
 
+
+    //since we want to listen to the events even if the ghost is inactive it's in awake and ondestroy instead of oneable and ondisable
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody2D>();
         _input = GetComponent<PlayerInput>();
+        GameManager.Instance.OnLevelStarted += ResetPosition;
+        GameManager.Instance.OnLevelStarted += Reactiveate;
     }
 
-    private void OnEnable()
+    private void OnDestroy()
     {
-        GameManager.Instance.OnLevelStarted += ResetPosition;
-    }
-    private void OnDisable()
-    {
+        GameManager.Instance.OnLevelStarted -= Reactiveate;
         GameManager.Instance.OnLevelStarted -= ResetPosition;
     }
 
-    private void FixedUpdate()
+    private void Reactiveate()
+    {
+        gameObject.SetActive(true);
+    }
+
+    private void Update()
     {
         if (!_canMove) { return; } 
 
         _rigidbody.velocity = transform.right * GetSpeed();
         _rigidbody.angularVelocity = -GetCurrentRotationDelta();
+
+        if (_input.GetDash()) OnDash?.Invoke();
     }
+
+
 
     public void SetNewInput(PlayerInput playerInput)
     {
@@ -78,6 +90,10 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
+
+        if (collider.CompareTag("DashBox"))
+            gameObject.SetActive(false);
+
         if (!collider.CompareTag("Finish")) { return; }
 
         if (!(_input is ManualPlayerInput manualInput))
