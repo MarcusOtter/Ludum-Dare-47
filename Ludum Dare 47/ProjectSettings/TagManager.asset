@@ -13,8 +13,8 @@ TagManager:
   - UI
   - 
   - 
-  - 
-  - 
+  - PlayerLayer
+  - GhostLayer
   - 
   - 
   - 
@@ -38,6 +38,12 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Background
+    uniqueID: 144057529
+    locked: 0
+  - name: Branch
+    uniqueID: 2928237995
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0

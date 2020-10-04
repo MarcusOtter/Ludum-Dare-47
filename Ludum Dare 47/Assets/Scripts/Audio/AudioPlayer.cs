@@ -1,123 +1,86 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using UnityEngine;
 
-public class AudioPlayer : SingletonBehaviour<AudioPlayer>
+[RequireComponent(typeof(AudioSource))]
+public class AudioPlayer : MonoBehaviour
 {
-    /// <summary>The time to wait after the audio clip has ended before destroying the audio source.</summary>
-    private const float SoundEffectDestroyDelayInSeconds = 0.5f;
-    private readonly Type[] _customAudioClipTypes = {typeof(AudioSource), typeof(PitchVolumeUpdater)};
-    private readonly MusicFadeSettings _defaultMusicFadeSettings = new MusicFadeSettings();
+    [SerializeField] private float _destroyDelay;
 
-    private AudioSource _currentMusicSource;
+    private bool _isFading;
+    private bool _isMuted;
+
+    private AudioSource _audioSource;
+    private CustomAudioClip _customAudioClip;
+    private readonly MusicFadeSettings _defaultFadeSettings = new MusicFadeSettings();
+
+    // TODO: implement fading in this class and add a bool for it
+    // if bool fading then don't auto assign vol and pitch
 
     private void OnEnable()
     {
-        AssertSingleton(this);
+        _audioSource = GetComponent<AudioSource>();
     }
 
-    public async Task PlayNewMusicAsync(CustomAudioClip newMusic, MusicFadeSettings overrideFadeSettings = null)
+    public void Play(CustomAudioClip customAudioClip, ulong delayInSeconds = 0L)
     {
-        if (!newMusic.IsMusic)
+        _customAudioClip = customAudioClip;
+
+        _audioSource.clip = customAudioClip.GetClip();
+        _audioSource.loop = customAudioClip.IsMusic;
+        _audioSource.volume = customAudioClip.GetVolume();
+        _audioSource.pitch = customAudioClip.GetPitch();
+
+        _audioSource.PlayDelayed(delayInSeconds);
+
+        if (!customAudioClip.IsMusic)
         {
-            Debug.LogError($"{newMusic.name} does not have IsMusic = true");
-            return;
+            Destroy(gameObject, delayInSeconds + customAudioClip.GetClip().length + _destroyDelay);
         }
-
-        var fadeSettings = overrideFadeSettings ?? _defaultMusicFadeSettings;
-
-        if (_currentMusicSource != null)
-        {
-            await StopCurrentMusic(fadeSettings);
-            await Task.Delay((int) (_defaultMusicFadeSettings.DelayBetweenSongsInSeconds * 1000f));
-        }
-
-        await StartNewMusic(newMusic, fadeSettings);
     }
 
-    public void PlaySoundEffect(CustomAudioClip customAudioClip, ulong delayInSeconds = 0L)
+    public async Task FadeOutAsync(MusicFadeSettings fadeSettingsOverride = null)
     {
-        if (customAudioClip.IsMusic)
-        {
-            Debug.LogError($"{customAudioClip.name} does not have IsMusic = false");
-            return;
-        }
+        _isFading = true;
+        var fadeSettings = fadeSettingsOverride ?? _defaultFadeSettings;
 
-        var spawnedAudioSource = SpawnAudioSource(customAudioClip);
-        var spawnedPitchVolumeUpdater = spawnedAudioSource.GetComponent<PitchVolumeUpdater>();
-
-        spawnedPitchVolumeUpdater.SetTargetClip(customAudioClip);
-        spawnedAudioSource.PlayDelayed(delayInSeconds);
-
-        Destroy(spawnedAudioSource.gameObject, delayInSeconds + customAudioClip.GetClip().length + SoundEffectDestroyDelayInSeconds);
-    }
-
-    private AudioSource SpawnAudioSource(CustomAudioClip customAudioClip)
-    {
-        var clip = customAudioClip.GetClip();
-        var volume = customAudioClip.GetVolume();
-        var pitch = customAudioClip.GetPitch();
-
-        var spawnedGameObject = new GameObject($"\"{customAudioClip.name}\" audio player", _customAudioClipTypes);
-        spawnedGameObject.transform.SetParent(transform);
-
-        var spawnedAudioSource = spawnedGameObject.GetComponent<AudioSource>();
-
-        spawnedAudioSource.playOnAwake = false;
-        spawnedAudioSource.clip = clip;
-        spawnedAudioSource.loop = customAudioClip.IsMusic;
-        spawnedAudioSource.volume = volume;
-        spawnedAudioSource.pitch = pitch;
-
-        return spawnedAudioSource;
-    }
-
-    private async Task StopCurrentMusic(MusicFadeSettings fadeSettings)
-    {
-        _currentMusicSource.GetComponent<PitchVolumeUpdater>().enabled = false;
-
-        // Fade out volume
         if (fadeSettings.FadeTimeInSeconds != 0)
         {
-            var startingVolume = _currentMusicSource.volume;
+            var startingVolume = _audioSource.volume;
 
-            while (_currentMusicSource.volume > 0f)
+            while (_audioSource.volume > 0f)
             {
-                await Task.Delay((int) (fadeSettings.UpdateDelayInSeconds * 1000f));
-                _currentMusicSource.volume -= startingVolume * (fadeSettings.UpdateDelayInSeconds / fadeSettings.FadeTimeInSeconds);
+                await Task.Delay((int)(fadeSettings.UpdateDelayInSeconds * 1000f));
+                _audioSource.volume -= startingVolume * (fadeSettings.UpdateDelayInSeconds / fadeSettings.FadeTimeInSeconds);
             }
         }
 
-        _currentMusicSource.volume = 0f;
-        Destroy(_currentMusicSource.gameObject);
-        _currentMusicSource = null;
+        _audioSource.volume = 0f;
+        _isMuted = true;
+        _isFading = false;
     }
 
-    private async Task StartNewMusic(CustomAudioClip customAudioClip, MusicFadeSettings fadeSettings)
+    public async Task FadeInAsync(MusicFadeSettings fadeSettingsOverride = null)
     {
-        // Start new music
-        var spawnedAudioSource = SpawnAudioSource(customAudioClip);
-        var spawnedPitchVolumeUpdater = spawnedAudioSource.GetComponent<PitchVolumeUpdater>();
-        spawnedPitchVolumeUpdater.enabled = false;
+        _isFading = true;
+        var fadeSettings = fadeSettingsOverride ?? _defaultFadeSettings;
 
-        spawnedAudioSource.volume = 0f;
-        _currentMusicSource = spawnedAudioSource;
-        _currentMusicSource.Play();
 
-        var targetVolume = customAudioClip.GetVolume() * AudioSettings.Instance.BaseVolume;
 
-        // Fade in new music
-        if (fadeSettings.FadeTimeInSeconds != 0)
-        {
-            while (_currentMusicSource.volume < targetVolume)
-            {
-                await Task.Delay((int) (fadeSettings.UpdateDelayInSeconds * 1000f));
-                _currentMusicSource.volume += targetVolume * (fadeSettings.UpdateDelayInSeconds / fadeSettings.FadeTimeInSeconds);
-            }
-        }
+        _isFading = false;
+    }
 
-        _currentMusicSource.volume = targetVolume;
-        spawnedPitchVolumeUpdater.enabled = true;
-        spawnedPitchVolumeUpdater.SetTargetClip(customAudioClip);
+    public void Mute(bool muted)
+    {
+        _isMuted = muted;
+    }
+
+    private void Update()
+    {
+        if (_customAudioClip == null) { return; }
+
+        if (_isFading || _isMuted) { return; }
+
+        _audioSource.pitch = _customAudioClip.GetPitch() * AudioSettings.Instance.BasePitch;
+        _audioSource.volume = _customAudioClip.GetVolume() * AudioSettings.Instance.BaseVolume;
     }
 }
