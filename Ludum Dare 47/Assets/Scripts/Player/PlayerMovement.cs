@@ -33,6 +33,11 @@ public class PlayerMovement : MonoBehaviour
     private void Reactiveate()
     {
         gameObject.SetActive(true);
+        foreach (var p in GetComponentsInChildren<SpriteRenderer>())
+        {
+            p.color = new Color(255, 255, 255);
+        }
+        _canMove = true;
     }
 
     private void Update()
@@ -87,12 +92,23 @@ public class PlayerMovement : MonoBehaviour
         return _movementSpeed;
         //add thing for different insects here
     }
+    private void Die()
+    {
+        foreach(var p in GetComponentsInChildren<SpriteRenderer>())
+        {
+            p.color = new Color(.15f, .15f, .15f);
+        }
+        _canMove = false;
+    }
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
 
         if (collider.CompareTag("DashBox"))
-            gameObject.SetActive(false);
+        {
+            Die();
+
+        }
 
         if (!collider.CompareTag("Finish")) { return; }
 

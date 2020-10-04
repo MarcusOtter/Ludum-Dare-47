@@ -9,12 +9,15 @@ public class PlayerDash : MonoBehaviour
     [SerializeField] private DashHitbox _dashHitboxPrefab;
     private bool _dashing;
     private Transform _dashHitBox;
+    private Vector2 _colliderChildPos;
+
 
 
     private void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
         _dashHitBox = transform.Find("DashHitBox");
+        _colliderChildPos = _dashHitBox.localPosition;
     }
 
     private void OnEnable()
@@ -35,7 +38,10 @@ public class PlayerDash : MonoBehaviour
 
     private void TurnOffDashBox()
     {
+        StopAllCoroutines();
         _dashHitBox.gameObject.SetActive(false);
+        _dashHitBox.localPosition = _colliderChildPos;
+        _dashing = false;
     }
 
     private IEnumerator DashRoutine()
@@ -60,19 +66,21 @@ public class PlayerDash : MonoBehaviour
         }
 
         //keep it still without unchilding it so you don't collide with your own dash and die
-        var colliderChildPos = _dashHitBox.localPosition;
+        var _colliderChildPos = _dashHitBox.localPosition;
         var colliderChildRot = _dashHitBox.rotation;
+
         float startLingerTime = GameManager.Instance.GetTimeSinceLevelStart();
         Vector2 startLingerPosition = _dashHitBox.position;
 
-        while(GameManager.Instance.GetTimeSinceLevelStart() < startLingerTime + _lingerTime)
+
+        while (GameManager.Instance.GetTimeSinceLevelStart() < startLingerTime + _lingerTime)
         {
             _dashHitBox.position = startLingerPosition;
             _dashHitBox.rotation = colliderChildRot;
             yield return null;
         }
         //set it back to where it was
-        _dashHitBox.localPosition = colliderChildPos;
+        _dashHitBox.localPosition = _colliderChildPos;
         _dashHitBox.rotation = Quaternion.identity;
 
         _rb.velocity = Vector2.zero;

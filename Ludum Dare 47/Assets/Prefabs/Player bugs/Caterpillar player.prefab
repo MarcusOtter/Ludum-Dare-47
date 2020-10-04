@@ -607,7 +607,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _distance: 5
   _time: 0.25
-  _lingerTime: 1
+  _lingerTime: 3
   _dashHitboxPrefab: {fileID: 0}
 --- !u!1001 &1364299343139767162
 PrefabInstance:
