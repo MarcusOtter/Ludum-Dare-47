@@ -1,15 +1,9 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using UnityEngine;
 
 public class AudioPlayerSpawner : SingletonBehaviour<AudioPlayerSpawner>
 {
-    /// <summary>The time to wait after the audio clip has ended before destroying the audio source.</summary>
-    private const float SoundEffectDestroyDelayInSeconds = 0.5f;
-    private readonly Type[] _customAudioClipTypes = {typeof(AudioSource), typeof(AudioPlayer)};
     private readonly MusicFadeSettings _defaultMusicFadeSettings = new MusicFadeSettings();
-
-    [SerializeField] private AudioPlayer _audioPlayerPrefab;
     private AudioPlayer _currentMusicPlayer;
 
     private void OnEnable()
@@ -44,41 +38,21 @@ public class AudioPlayerSpawner : SingletonBehaviour<AudioPlayerSpawner>
             return;
         }
 
-        Instantiate(_audioPlayerPrefab, transform).Play(customAudioClip, delayInSeconds);
+        AudioPlayerPool.Instance.Get().Play(customAudioClip, delayInSeconds);
     }
 
     private async Task StopCurrentMusic(MusicFadeSettings fadeSettings)
     {
         await _currentMusicPlayer.FadeOutAsync(fadeSettings);
-        Destroy(_currentMusicPlayer.gameObject);
+        AudioPlayerPool.Instance.AddToPool(_currentMusicPlayer);
         _currentMusicPlayer = null;
     }
 
     private async Task StartNewMusic(CustomAudioClip customAudioClip, MusicFadeSettings fadeSettings)
     {
-        //// Start new music
-        //var spawnedAudioSource = SpawnAudioSource(customAudioClip);
-        //var spawnedPitchVolumeUpdater = spawnedAudioSource.GetComponent<AudioPlayer>();
-        //spawnedPitchVolumeUpdater.enabled = false;
-
-        //spawnedAudioSource.volume = 0f;
-        //_currentMusicPlayer = spawnedAudioSource;
-        //_currentMusicPlayer.Play();
-
-        //var targetVolume = customAudioClip.GetVolume() * AudioSettings.Instance.BaseVolume;
-
-        //// Fade in new music
-        //if (fadeSettings.FadeTimeInSeconds != 0)
-        //{
-        //    while (_currentMusicPlayer.volume < targetVolume)
-        //    {
-        //        await Task.Delay((int) (fadeSettings.UpdateDelayInSeconds * 1000f));
-        //        _currentMusicPlayer.volume += targetVolume * (fadeSettings.UpdateDelayInSeconds / fadeSettings.FadeTimeInSeconds);
-        //    }
-        //}
-
-        //_currentMusicPlayer.volume = targetVolume;
-        //spawnedPitchVolumeUpdater.enabled = true;
-        //spawnedPitchVolumeUpdater.Play(customAudioClip);
+        var audioPlayer = AudioPlayerPool.Instance.Get();
+        audioPlayer.Play(customAudioClip);
+        _currentMusicPlayer = audioPlayer;
+        await audioPlayer.FadeInAsync(fadeSettings);
     }
 }
