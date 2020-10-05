@@ -19,7 +19,7 @@ MonoBehaviour:
   _minVolume: 0.5
   _hasRandomClip: 0
   _audioClips:
-  - {fileID: 8300000, guid: c3eb1d29752410449a069c83724db005, type: 3}
+  - {fileID: 8300000, guid: 2e899f21bcb9da44aa0ea416907f8937, type: 3}
   _basePitch: 1
   _hasRandomPitch: 0
   _maxPitch: 1
