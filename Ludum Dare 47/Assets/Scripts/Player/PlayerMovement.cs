@@ -103,7 +103,11 @@ public class PlayerMovement : MonoBehaviour
             p.color = new Color(.15f, .15f, .15f);
         }
         _canMove = false;
-        GameManager.Instance.EndGame();
+
+        if (_input is ManualPlayerInput)
+        {
+            GameManager.Instance.EndGame();
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collider)
