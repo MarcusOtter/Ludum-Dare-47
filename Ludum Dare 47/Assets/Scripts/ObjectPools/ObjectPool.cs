@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class ObjectPool<T> : MonoBehaviour where T : MonoBehaviour
+public abstract class ObjectPool<T> : SingletonBehaviour<ObjectPool<T>> where T : MonoBehaviour
 {
     private readonly Queue<T> _pool;
 
@@ -11,6 +11,11 @@ public abstract class ObjectPool<T> : MonoBehaviour where T : MonoBehaviour
     protected ObjectPool()
     {
         _pool = new Queue<T>(_initialSize);
+    }
+
+    private void Awake()
+    {
+        AssertSingleton(this);
     }
 
     private void OnEnable()
@@ -25,7 +30,9 @@ public abstract class ObjectPool<T> : MonoBehaviour where T : MonoBehaviour
             AddObjectsToPool(_initialSize);
         }
 
-        return _pool.Dequeue();
+        var obj = _pool.Dequeue();
+        obj.gameObject.SetActive(true);
+        return obj;
     }
 
     public void AddToPool(T obj)

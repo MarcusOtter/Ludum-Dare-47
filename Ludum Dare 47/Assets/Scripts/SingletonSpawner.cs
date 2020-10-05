@@ -2,25 +2,34 @@
 
 public class SingletonSpawner : MonoBehaviour
 {
-    [SerializeField] private GameManager _gameManagerPrefab;
+    [Header("Audio prefabs")]
     [SerializeField] private AudioPlayerSpawner _audioPlayerSpawnerPrefab;
     [SerializeField] private AudioSettings _audioSettingsPrefab;
+    [SerializeField] private AudioPlayerPool _audioPlayerPoolPrefab;
+
+    [Header("Other prefabs")]
+    [SerializeField] private GameManager _gameManagerPrefab;
 
     private void Awake()
     {
         if (GameManager.Instance == null)
         {
-            var gameObjectToSpawn = Instantiate(_gameManagerPrefab);
+            Instantiate(_gameManagerPrefab);
         }
 
         if (AudioPlayerSpawner.Instance == null)
         {
-            var gameObjectToSpawn = Instantiate(_audioPlayerSpawnerPrefab);
+            Instantiate(_audioPlayerSpawnerPrefab);
         }
 
         if (AudioSettings.Instance == null)
         {
-            var gameObjectToSpawn = Instantiate(_audioPlayerSpawnerPrefab);
+            Instantiate(_audioSettingsPrefab);
+        }
+
+        if (AudioPlayerPool.Instance == null)
+        {
+            Instantiate(_audioPlayerPoolPrefab);
         }
 
         // Self-destruct after spawning the missing singletons

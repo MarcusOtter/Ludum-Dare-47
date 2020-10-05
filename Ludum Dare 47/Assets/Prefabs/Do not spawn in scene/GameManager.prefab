@@ -44,11 +44,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _bugPrefabs:
+  - {fileID: 3900748590742819808, guid: 90d3ce7a8e14f4747a15b06bd9a981f0, type: 3}
+  - {fileID: 3900748590742819808, guid: c59b3fc5ef8a7a7449b13b71a7b2e3e2, type: 3}
   - {fileID: 3900748590742819808, guid: 2aa1613623b80884cb02216477dd1b1a, type: 3}
   _defaultSpawnPosition: {x: -10, y: 0, z: 0}
-  _ghostCollisionLayer:
-    serializedVersion: 2
-    m_Bits: 256
-  _playerLayerMask:
-    serializedVersion: 2
-    m_Bits: 512
+  _gameMode: 0
