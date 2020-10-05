@@ -6,6 +6,7 @@ using System.Collections;
 public class PlayerMovement : MonoBehaviour
 {
     public Action OnDash;
+    private static bool _hasFinishedLevel;
 
     [SerializeField] private BugType _bugType;
     [SerializeField] private float _movementSpeed = 2f;
@@ -105,6 +106,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void UpdateInputMode()
     {
+        _hasFinishedLevel = false;
+
         if (!(_input is ManualPlayerInput manualInput)) { return; }
 
         var playerInputs = manualInput.GetPlayerInputs();
@@ -156,6 +159,7 @@ public class PlayerMovement : MonoBehaviour
 
         foreach (var col in GetComponentsInChildren<Collider2D>())
         {
+            if (col.CompareTag("DashBox")) { continue; }
             col.enabled = false;
         }
 
@@ -163,7 +167,10 @@ public class PlayerMovement : MonoBehaviour
         _rigidbody.angularVelocity = 0f;
         _rigidbody.velocity *= 0.5f;
 
+        if (_hasFinishedLevel) { return; }
         if (_input is AutomaticPlayerInput) { return; }
+
+        _hasFinishedLevel = true;
         await GameManager.Instance.TriggerLevelFinish();
     }
 
@@ -200,6 +207,7 @@ public class PlayerMovement : MonoBehaviour
 
         foreach (var collider in GetComponentsInChildren<Collider2D>())
         {
+            if (collider.CompareTag("DashBox")) { continue; }
             collider.enabled = true;
         }
     }
