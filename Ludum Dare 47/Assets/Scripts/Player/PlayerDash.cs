@@ -5,7 +5,7 @@ public class PlayerDash : MonoBehaviour
 {
     [SerializeField] private float _distance, _time, _lingerTime;
     private Rigidbody2D _rb;
-    private bool _dashing;
+    private bool _isDashing;
     private Transform _dashHitBox;
     private Vector2 _colliderChildPos;
 
@@ -28,9 +28,14 @@ public class PlayerDash : MonoBehaviour
         GameManager.Instance.OnLevelStarted -= TurnOffDashBox;
     }
 
+    public bool IsDashing()
+    {
+        return _isDashing;
+    }
+
     private void Dash()
     {
-        if(!_dashing)StartCoroutine(DashRoutine());
+        if(!_isDashing)StartCoroutine(DashRoutine());
     }
 
     private void TurnOffDashBox()
@@ -38,12 +43,12 @@ public class PlayerDash : MonoBehaviour
         StopAllCoroutines();
         _dashHitBox.gameObject.SetActive(false);
         _dashHitBox.localPosition = _colliderChildPos;
-        _dashing = false;
+        _isDashing = false;
     }
 
     private IEnumerator DashRoutine()
     {
-        _dashing = true;
+        _isDashing = true;
         float speed = _distance / _time;
         float startTime = GameManager.Instance.GetTimeSinceLevelStart();
         _dashHitBox.gameObject.SetActive(true);
@@ -80,6 +85,6 @@ public class PlayerDash : MonoBehaviour
 
         _rb.velocity = Vector2.zero;
         _dashHitBox.gameObject.SetActive(false);
-        _dashing = false;
+        _isDashing = false;
     }
 }

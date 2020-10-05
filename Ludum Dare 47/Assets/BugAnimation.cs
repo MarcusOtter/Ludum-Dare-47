@@ -12,6 +12,11 @@ public class BugAnimation : MonoBehaviour
     //[SerializeField] private AnimatorController _helmetBug, _noHelmetBug;
     //[SerializeField] private Transform _helmetGraphics, _noHelmetGraphics;
 
+    //private void Awake()
+    //{
+    //    GameManager.Instance.OnLevelStarted += SetGraphicsInATinyBit;
+    //}
+
     //private void Start()
     //{
     //    _animator = GetComponentInParent<Animator>();
@@ -22,13 +27,8 @@ public class BugAnimation : MonoBehaviour
 
     //private void Update()
     //{
-    //    _animator.SetBool("Dashing", _dash.GetDashing());
+    //    _animator.SetBool("Dashing", _dash.IsDashing());
     //    _animator.SetBool("Stopped", _playerMovement.GetCanMove());
-    //}
-
-    //private void Awake()
-    //{
-    //    GameManager.Instance.OnLevelStarted += SetGraphicsInATinyBit;    
     //}
 
     //private void OnDestroy()
@@ -43,7 +43,7 @@ public class BugAnimation : MonoBehaviour
 
     //private void SetGraphics()
     //{
-    //    if(transform.childCount > 0) Destroy(transform.GetChild(0).gameObject); //https://youtu.be/ZjOAwBtRD54
+    //    if (transform.childCount > 0) Destroy(transform.GetChild(0).gameObject); //https://youtu.be/ZjOAwBtRD54
     //    if (GetComponentInParent<PlayerInput>() is ManualPlayerInput)
     //    {
     //        Instantiate(_helmetGraphics, transform);
@@ -55,6 +55,4 @@ public class BugAnimation : MonoBehaviour
     //        _animator.runtimeAnimatorController = _noHelmetBug;
     //    }
     //}
-
-
 }
