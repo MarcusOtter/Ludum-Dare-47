@@ -15,22 +15,23 @@ public class PlayerMovement : MonoBehaviour
     private bool _canMove = true;
 
 
-    //since we want to listen to the events even if the ghost is inactive it's in awake and ondestroy instead of oneable and ondisable
+    // Since we want to listen to the events even if the ghost is inactive,
+    // it's in awake and OnDestroy instead of OnEnable and OnDisable
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody2D>();
         _input = GetComponent<PlayerInput>();
         GameManager.Instance.OnLevelStarted += ResetPosition;
-        GameManager.Instance.OnLevelStarted += Reactiveate;
+        GameManager.Instance.OnLevelStarted += Reactivate;
     }
 
     private void OnDestroy()
     {
-        GameManager.Instance.OnLevelStarted -= Reactiveate;
+        GameManager.Instance.OnLevelStarted -= Reactivate;
         GameManager.Instance.OnLevelStarted -= ResetPosition;
     }
 
-    private void Reactiveate()
+    private void Reactivate()
     {
         gameObject.SetActive(true);
         foreach (var p in GetComponentsInChildren<SpriteRenderer>())
@@ -39,6 +40,7 @@ public class PlayerMovement : MonoBehaviour
         }
         _canMove = true;
     }
+
     public bool GetCanMove()
     {
         return _canMove;
@@ -53,8 +55,6 @@ public class PlayerMovement : MonoBehaviour
 
         if (_input.GetDash()) OnDash?.Invoke();
     }
-
-
 
     public void SetNewInput(PlayerInput playerInput)
     {
@@ -96,6 +96,7 @@ public class PlayerMovement : MonoBehaviour
         return _movementSpeed;
         //add thing for different insects here
     }
+
     private void Die()
     {
         foreach(var p in GetComponentsInChildren<SpriteRenderer>())
@@ -112,11 +113,9 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
-
         if (collider.CompareTag("DashBox"))
         {
             Die();
-
         }
 
         if (!collider.CompareTag("Finish")) { return; }
