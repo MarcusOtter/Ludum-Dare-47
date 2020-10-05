@@ -5853,6 +5853,22 @@ PrefabInstance:
       propertyPath: _clickEvent.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
       objectReference: {fileID: 1285709343}
+    - target: {fileID: 1736536325, guid: 4965dc010bfd4f04596313b2ba65022d, type: 3}
+      propertyPath: _onClickUpSound
+      value: 
+      objectReference: {fileID: 11400000, guid: 916e216a9172450468609681beaa73e6, type: 2}
+    - target: {fileID: 1736536325, guid: 4965dc010bfd4f04596313b2ba65022d, type: 3}
+      propertyPath: _onClickDownSound
+      value: 
+      objectReference: {fileID: 11400000, guid: a70f721e573c2a54481599747f5ac9e2, type: 2}
+    - target: {fileID: 1736536325, guid: 4965dc010bfd4f04596313b2ba65022d, type: 3}
+      propertyPath: _onHoverSound
+      value: 
+      objectReference: {fileID: 11400000, guid: c28e78abe3cbf834bb9168103c6b5c81, type: 2}
+    - target: {fileID: 1736536325, guid: 4965dc010bfd4f04596313b2ba65022d, type: 3}
+      propertyPath: _onExitSound
+      value: 
+      objectReference: {fileID: 11400000, guid: 17a32b6a2d9c3c146846e0a992d52102, type: 2}
     - target: {fileID: 176737478082800599, guid: 4965dc010bfd4f04596313b2ba65022d, type: 3}
       propertyPath: m_Name
       value: GameMode+Text (1)
@@ -6223,6 +6239,22 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 1736536325, guid: 4965dc010bfd4f04596313b2ba65022d, type: 3}
+      propertyPath: _onClickUpSound
+      value: 
+      objectReference: {fileID: 11400000, guid: 916e216a9172450468609681beaa73e6, type: 2}
+    - target: {fileID: 1736536325, guid: 4965dc010bfd4f04596313b2ba65022d, type: 3}
+      propertyPath: _onClickDownSound
+      value: 
+      objectReference: {fileID: 11400000, guid: a70f721e573c2a54481599747f5ac9e2, type: 2}
+    - target: {fileID: 1736536325, guid: 4965dc010bfd4f04596313b2ba65022d, type: 3}
+      propertyPath: _onHoverSound
+      value: 
+      objectReference: {fileID: 11400000, guid: c28e78abe3cbf834bb9168103c6b5c81, type: 2}
+    - target: {fileID: 1736536325, guid: 4965dc010bfd4f04596313b2ba65022d, type: 3}
+      propertyPath: _onExitSound
+      value: 
+      objectReference: {fileID: 11400000, guid: 17a32b6a2d9c3c146846e0a992d52102, type: 2}
     - target: {fileID: 176737478082800599, guid: 4965dc010bfd4f04596313b2ba65022d, type: 3}
       propertyPath: m_Name
       value: GameMode+Text (2)
