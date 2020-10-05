@@ -1610,8 +1610,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 793bf542b3b721446a48d2c894986ea3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _onHoverSound: {fileID: 0}
-  _onExitSound: {fileID: 0}
+  _onHoverSound: {fileID: 11400000, guid: c28e78abe3cbf834bb9168103c6b5c81, type: 2}
+  _onExitSound: {fileID: 11400000, guid: 17a32b6a2d9c3c146846e0a992d52102, type: 2}
   _onClickDownSound: {fileID: 0}
   _onClickUpSound: {fileID: 0}
   _clickEvent:
@@ -2064,8 +2064,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 793bf542b3b721446a48d2c894986ea3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _onHoverSound: {fileID: 0}
-  _onExitSound: {fileID: 0}
+  _onHoverSound: {fileID: 11400000, guid: c28e78abe3cbf834bb9168103c6b5c81, type: 2}
+  _onExitSound: {fileID: 11400000, guid: 17a32b6a2d9c3c146846e0a992d52102, type: 2}
   _onClickDownSound: {fileID: 0}
   _onClickUpSound: {fileID: 0}
   _clickEvent:
