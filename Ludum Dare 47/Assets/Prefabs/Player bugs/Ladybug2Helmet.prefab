@@ -124,7 +124,7 @@ MonoBehaviour:
   - {fileID: 9032258780917534768}
   m_Bounds:
     m_Center: {x: 1.0375464, y: -0.041574836, z: 0}
-    m_Extent: {x: 1.284435, y: 1.0545685, z: 0}
+    m_Extent: {x: 1.284435, y: 1.0545684, z: 0}
   m_UseBatching: 1
   m_AlwaysUpdate: 1
 --- !u!95 &9032258780518689846
@@ -137,7 +137,7 @@ Animator:
   m_GameObject: {fileID: 9032258780518689849}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 3ec81a7ea5a901940ad73eb0d091ed17, type: 2}
+  m_Controller: {fileID: 9100000, guid: 96cbf6dc66f84f54bbbffe53f9da83aa, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

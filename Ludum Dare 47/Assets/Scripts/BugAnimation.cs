@@ -27,21 +27,25 @@ public class BugAnimation : MonoBehaviour
 
     private void Start()
     {
-        _animator = GetComponentInParent<Animator>();
         _dash = GetComponentInParent<PlayerDash>();
         _playerMovement = GetComponentInParent<PlayerMovement>();
-        //SetGraphics();
+
     }
 
     private void Update()
     {
+        if (_animator == null)
+        {
+            _animator = GetComponentInChildren<Animator>();
+            return;
+        }
         _animator.SetBool(_dashingHash, _dash.IsDashing());
-        _animator.SetBool(_stoppedHash, _playerMovement.GetCanMove());
+        _animator.SetBool(_stoppedHash, !_playerMovement.GetCanMove());
     }
 
     private void SetGraphicsInATinyBit() //Since the input has to be swapped first in order for it to work
     {
-        //StartCoroutine(SetGraphicsDelayed(0.01f));
+        StartCoroutine(SetGraphicsDelayed(0.01f));
     }
 
     private IEnumerator SetGraphicsDelayed(float delayInSeconds)
@@ -58,12 +62,12 @@ public class BugAnimation : MonoBehaviour
         if (GetComponentInParent<PlayerInput>() is ManualPlayerInput)
         {
             Instantiate(_helmetGraphics, transform);
-            _animator.runtimeAnimatorController = _helmetBug;
         }
         else
         {
             Instantiate(_noHelmetGraphics, transform);
-            _animator.runtimeAnimatorController = _noHelmetBug;
         }
+        _animator = GetComponentInChildren<Animator>();
+        print(_animator);
     }
 }

@@ -5,7 +5,7 @@ public class PlayerDash : MonoBehaviour
 {
     [SerializeField] private float _distance, _time, _lingerTime;
     private Rigidbody2D _rb;
-    private bool _isDashing;
+    private bool _hasDashHitbox, _isDashing;
     private Transform _dashHitBox;
     private Vector2 _colliderChildPos;
 
@@ -35,19 +35,22 @@ public class PlayerDash : MonoBehaviour
 
     private void Dash()
     {
-        if(!_isDashing)StartCoroutine(DashRoutine());
+        if(!_hasDashHitbox)StartCoroutine(DashRoutine());
     }
 
     public void StopDashingImmediately()
     {
-        StopAllCoroutines();
         _dashHitBox.gameObject.SetActive(false);
         _dashHitBox.localPosition = _colliderChildPos;
+        _dashHitBox.localRotation = Quaternion.identity;
+        _hasDashHitbox = false;
         _isDashing = false;
+        StopAllCoroutines();
     }
 
     private IEnumerator DashRoutine()
     {
+        _hasDashHitbox = true;
         _isDashing = true;
         var speed = _distance / _time;
         var startTime = GameManager.Instance.GetTimeSinceLevelStart();
@@ -63,14 +66,18 @@ public class PlayerDash : MonoBehaviour
 
             dashHitBoxTransform.right = startPos - hitBoxPosition;
             _dashHitBox.localScale = dashHitBoxTransform.localScale.With(x: -(startPos - hitBoxPosition).magnitude / transform.localScale.x);
-            
-            if (GameManager.Instance.GetTimeSinceLevelStart() < startTime) break; //Means we've restarted
+
+            if (GameManager.Instance.GetTimeSinceLevelStart() < startTime) //Means we've restarted
+            {
+                StopDashingImmediately();
+                yield break;
+            }
             _rb.velocity = transform.right * speed;
             yield return null;
         }
-
+        _isDashing = false;
         //keep it still without unchilding it so you don't collide with your own dash and die
-        var colliderChildPos = _dashHitBox.localPosition;
+        //var colliderChildPos = _dashHitBox.localPosition;
         var colliderChildRot = _dashHitBox.rotation;
 
         float startLingerTime = GameManager.Instance.GetTimeSinceLevelStart();
@@ -84,11 +91,11 @@ public class PlayerDash : MonoBehaviour
         }
 
         //set it back to where it was
-        _dashHitBox.localPosition = colliderChildPos;
+        _dashHitBox.localPosition = _colliderChildPos;
         _dashHitBox.rotation = Quaternion.identity;
 
         _rb.velocity = Vector2.zero;
         _dashHitBox.gameObject.SetActive(false);
-        _isDashing = false;
+        _hasDashHitbox = false;
     }
 }
