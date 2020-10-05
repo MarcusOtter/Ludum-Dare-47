@@ -76,6 +76,7 @@ public class GameManager : SingletonBehaviour<GameManager>
     {
         _lost = true;
         OnGameOver?.Invoke(_score);
+        _score = 0;
     }
 
     public BugType GetNextBugTypeToSpawn()
