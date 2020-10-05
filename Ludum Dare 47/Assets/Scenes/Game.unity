@@ -1652,8 +1652,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _onHoverSound: {fileID: 11400000, guid: c28e78abe3cbf834bb9168103c6b5c81, type: 2}
   _onExitSound: {fileID: 11400000, guid: 17a32b6a2d9c3c146846e0a992d52102, type: 2}
-  _onClickDownSound: {fileID: 0}
-  _onClickUpSound: {fileID: 0}
+  _onClickDownSound: {fileID: 11400000, guid: a70f721e573c2a54481599747f5ac9e2, type: 2}
+  _onClickUpSound: {fileID: 11400000, guid: 916e216a9172450468609681beaa73e6, type: 2}
   _clickEvent:
     m_PersistentCalls:
       m_Calls:
@@ -2106,8 +2106,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _onHoverSound: {fileID: 11400000, guid: c28e78abe3cbf834bb9168103c6b5c81, type: 2}
   _onExitSound: {fileID: 11400000, guid: 17a32b6a2d9c3c146846e0a992d52102, type: 2}
-  _onClickDownSound: {fileID: 0}
-  _onClickUpSound: {fileID: 0}
+  _onClickDownSound: {fileID: 11400000, guid: a70f721e573c2a54481599747f5ac9e2, type: 2}
+  _onClickUpSound: {fileID: 11400000, guid: 916e216a9172450468609681beaa73e6, type: 2}
   _clickEvent:
     m_PersistentCalls:
       m_Calls:
