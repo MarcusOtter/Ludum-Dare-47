@@ -8,6 +8,7 @@ public class PlayerDash : MonoBehaviour
     private bool _hasDashHitbox, _isDashing;
     private Transform _dashHitBox;
     private Vector2 _colliderChildPos;
+    private PlayerMovement _playerMovement;
 
     private void Awake()
     {
@@ -19,13 +20,13 @@ public class PlayerDash : MonoBehaviour
     private void OnEnable()
     {
         GetComponent<PlayerMovement>().OnDash += Dash;
-        GameManager.Instance.OnLevelStarted += StopDashingImmediately;
+        GameManager.Instance.OnLevelStart += StopDashingImmediately;
     }
 
     private void OnDisable()
     {
         GetComponent<PlayerMovement>().OnDash -= Dash;
-        GameManager.Instance.OnLevelStarted -= StopDashingImmediately;
+        GameManager.Instance.OnLevelStart -= StopDashingImmediately;
     }
 
     public bool IsDashing()

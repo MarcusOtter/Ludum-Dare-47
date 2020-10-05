@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System;
+using System.Collections;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerMovement : MonoBehaviour
@@ -15,24 +16,32 @@ public class PlayerMovement : MonoBehaviour
     private PlayerDash _playerDash;
     private Transform _spawnPoint;
 
-    private bool _canMove = true;
+    private Action<int> _onRewindBeginAction;
 
-    // Since we want to listen to the events even if the ghost is inactive,
-    // we subscribe to events in Awake and OnDestroy instead of OnEnable and OnDisable
+    private bool _canMove;
+
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody2D>();
         _input = GetComponent<PlayerInput>();
         _playerDash = GetComponent<PlayerDash>();
-
-        GameManager.Instance.OnLevelStarted += ResetPosition;
-        GameManager.Instance.OnLevelStarted += Reactivate;
     }
 
-    private void OnDestroy()
+
+    private void OnEnable()
     {
-        GameManager.Instance.OnLevelStarted -= Reactivate;
-        GameManager.Instance.OnLevelStarted -= ResetPosition;
+        _onRewindBeginAction = rewindDuration => StartCoroutine(RewindToSpawnPoint(rewindDuration));
+
+        GameManager.Instance.OnLevelStart += StartLevel;
+        GameManager.Instance.OnRewindBegin += _onRewindBeginAction;
+        GameManager.Instance.OnRewindEnd += UpdateInputMode;
+    }
+
+    private void OnDisable()
+    {
+        GameManager.Instance.OnLevelStart -= StartLevel;
+        GameManager.Instance.OnRewindBegin -= _onRewindBeginAction;
+        GameManager.Instance.OnRewindEnd -= UpdateInputMode;
     }
 
     private void Update()
@@ -41,8 +50,12 @@ public class PlayerMovement : MonoBehaviour
 
         _rigidbody.velocity = transform.right * _movementSpeed;
         _rigidbody.angularVelocity = -GetCurrentRotationDelta();
+        if (_input.GetDash()) { OnDash?.Invoke(); }
+    }
 
-        if (_input.GetDash()) OnDash?.Invoke();
+    public BugType GetBugType()
+    {
+        return _bugType;
     }
 
     public bool GetCanMove()
@@ -50,19 +63,16 @@ public class PlayerMovement : MonoBehaviour
         return _canMove;
     }
 
-    public void SetNewInput(PlayerInput playerInput)
-    {
-        _input = playerInput;
-    }
 
-    private void Reactivate()
+    public void SetSpawnPoint(Transform spawnPoint)
     {
-        gameObject.SetActive(true);
-        foreach (var p in GetComponentsInChildren<SpriteRenderer>())
+        if (_spawnPoint != null)
         {
-            p.color = new Color(255, 255, 255);
+            Debug.LogError("Why are we trying to set spawn point twice for a player??");
+            return;
         }
-        _canMove = true;
+
+        _spawnPoint = spawnPoint;
     }
 
     private float GetTurningSpeed()
@@ -87,12 +97,29 @@ public class PlayerMovement : MonoBehaviour
         return delta;
     }
 
-    private void ResetPosition()
+    private void StartLevel()
     {
         _canMove = true;
-        if (_input is ManualPlayerInput) return;
-        transform.position = _input.GetStartPosition();
-        transform.rotation = Quaternion.Euler(0,0,0);
+        gameObject.SetActive(true);
+    }
+
+    private void UpdateInputMode()
+    {
+        if (!(_input is ManualPlayerInput manualInput)) { return; }
+
+        var playerInputs = manualInput.GetPlayerInputs();
+        Destroy(manualInput);
+
+        var autoPlayerInput = gameObject.AddComponent<AutomaticPlayerInput>();
+        autoPlayerInput.SetInputs(playerInputs);
+        _input = autoPlayerInput;
+
+        var allChildren = GetComponentsInChildren<Transform>();
+        foreach (var child in allChildren)
+        {
+            // Hard code is good code
+            child.gameObject.layer = 9;
+        }
     }
 
     private void Die()
@@ -114,11 +141,11 @@ public class PlayerMovement : MonoBehaviour
 
         if (_input is ManualPlayerInput)
         {
-            GameManager.Instance.EndGame();
+            GameManager.Instance.TriggerGameOver();
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D collider)
+    private async void OnTriggerEnter2D(Collider2D collider)
     {
         if (collider.CompareTag("DashBox"))
         {
@@ -127,27 +154,53 @@ public class PlayerMovement : MonoBehaviour
 
         if (!collider.CompareTag("Finish")) { return; }
 
-        if (!(_input is ManualPlayerInput manualInput))
+        foreach (var col in GetComponentsInChildren<Collider2D>())
         {
-            _canMove = false;
-            return;
+            col.enabled = false;
         }
 
-        ResetPosition();
+        _canMove = false;
+        _rigidbody.angularVelocity = 0f;
+        _rigidbody.velocity *= 0.5f;
 
-        var autoPlayerInput = gameObject.AddComponent<AutomaticPlayerInput>();
-        var replayInputs = manualInput.GetReplayInputs();
+        if (_input is AutomaticPlayerInput) { return; }
+        await GameManager.Instance.TriggerLevelFinish();
+    }
 
-        autoPlayerInput.SetInputs(replayInputs);
+    private IEnumerator RewindToSpawnPoint(int rewindDurationInMs)
+    {
+        var cachedTransform = transform;
 
-        SetNewInput(autoPlayerInput);
+        _canMove = false;
+        _rigidbody.velocity = Vector2.zero;
+        _rigidbody.angularVelocity = 0f;
 
-        Destroy(manualInput);
+        foreach (var p in GetComponentsInChildren<SpriteRenderer>())
+        {
+            p.color = new Color(255, 255, 255);
+        }
 
-        // Hard code is good code
-        // Also TODO this needs to happen on all the layers of the children (e.g for caterpillar)
-        gameObject.layer = 9;
+        var startPosition = (Vector2) cachedTransform.position;
+        var startRotation = cachedTransform.rotation;
+        var rewindDurationInSeconds = rewindDurationInMs / 1000f;
+        var timer = 0f;
 
-        GameManager.Instance.EndLevel(replayInputs);
+        while (timer < rewindDurationInSeconds)
+        {
+            timer += 0.02f;
+            var progress = timer / rewindDurationInSeconds;
+            cachedTransform.position = Vector2.Lerp(startPosition, _spawnPoint.position, progress);
+            cachedTransform.rotation = Quaternion.Lerp(startRotation, _spawnPoint.rotation, progress);
+
+            yield return new WaitForSeconds(0.02f);
+        }
+
+        cachedTransform.position = _spawnPoint.position;
+        cachedTransform.rotation = _spawnPoint.rotation;
+
+        foreach (var collider in GetComponentsInChildren<Collider2D>())
+        {
+            collider.enabled = true;
+        }
     }
 }

@@ -1,67 +1,91 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 public class GameManager : SingletonBehaviour<GameManager>
 {
-    public event Action OnLevelStarted;
-    public event Action OnLevelCompleted;
+    //                                        Main loop
+    //                         | -------<-----------<----------<-------
+    //                         ⋁                                      |
+    public event Action OnPrepareNewLevel;     //                     ⋀
+    public event Action OnLevelStart;         //                      |
+    public event Action OnLevelFinish;       //                       |
+    public event Action<int> OnRewindBegin; //                        |
+    public event Action      OnRewindEnd;  //                         ⋀
+    //                         |                                      |
+    //                         ⋁ ------->----------->---------->-------
     public event Action<int> OnGameOver;
 
+    [Header("Main loop delays")]
+    [SerializeField] private int _timeUntilRewindInMs = 3000;
+    [SerializeField] private int _rewindDurationInMs = 3000;
 
-    private readonly List<ReplayInputs> _replayInputs = new List<ReplayInputs>();
+    [Header("Countdown audio")]
+    [SerializeField] private CustomAudioClip _clearThroatAudio;
+    [SerializeField] private CustomAudioClip _countdownThreeAudio;
+    [SerializeField] private CustomAudioClip _countdownTwoAudio;
+    [SerializeField] private CustomAudioClip _countdownOneAudio;
+    [SerializeField] private CustomAudioClip _countdownGoAudio;
+
+
+    private BugType _nextBugTypeToSpawn;
     private float _startTime;
-    private bool _lost = false; 
-
-    [SerializeField] private PlayerMovement[] _bugPrefabs;
-    [SerializeField] private Vector3 _defaultSpawnPosition;
-
-
-    [SerializeField] private GameMode _gameMode;
-
+    private bool _lost;
+    private int _score;
 
     private void OnEnable()
     {
         AssertSingleton(this);
     }
 
-    public void EndGame()
-    {
-        _lost = true;
-        OnGameOver?.Invoke(GetScore());
-        //LeanTween.value(1.0f, 0.01f, 0.5f).setOnUpdate(SetTime);
-    }
-    public GameMode GetGameMode()
-    {
-        return _gameMode;
-    }
-
-    private void SetTime(float time)
-    {
-        Time.timeScale = time;
-    }
-
-    public int GetScore()
-    {
-        return _replayInputs.Count;
-    }
-
-    private void Update()
+    private async void Update()
     {
         //for testing purposes
         if (Input.GetKeyDown(KeyCode.O))
         {
             _lost = false;
-            _replayInputs.Clear();
-            StartLevel();
-            _defaultSpawnPosition.y = 0f;
+            await StartMainLoop();
         }
     }
 
-    private void Start()
+    public async Task StartMainLoop()
     {
-        //StartLevel();
+        AudioPlayerSpawner.Instance.PlaySoundEffect(_clearThroatAudio);
+        await Task.Delay(1500);
+        OnPrepareNewLevel?.Invoke();
+        await Task.Delay(1500);
+        await PlayCountdownAudioAsync();
+
+        _startTime = Time.time;
+        OnLevelStart?.Invoke();
+    }
+
+    public async Task TriggerLevelFinish()
+    {
+        _score++;
+        OnLevelFinish?.Invoke();
+        await Task.Delay(_timeUntilRewindInMs);
+        OnRewindBegin?.Invoke(_rewindDurationInMs);
+        await Task.Delay(_rewindDurationInMs);
+        OnRewindEnd?.Invoke();
+
+        await StartMainLoop();
+    }
+
+    public void TriggerGameOver()
+    {
+        _lost = true;
+        OnGameOver?.Invoke(_score);
+    }
+
+    public BugType GetNextBugTypeToSpawn()
+    {
+        return _nextBugTypeToSpawn;
+    }
+
+    public void SetNextBugTypeToSpawn(BugType bugType)
+    {
+        _nextBugTypeToSpawn = bugType;
     }
 
     public float GetTimeSinceLevelStart()
@@ -69,57 +93,14 @@ public class GameManager : SingletonBehaviour<GameManager>
         return Time.time - _startTime;
     }
 
-    public void EndLevel(ReplayInputs replayInputs)
+    private async Task PlayCountdownAudioAsync()
     {
-        _replayInputs.Add(replayInputs);
-        OnLevelCompleted?.Invoke();
-        StartLevel();
+        AudioPlayerSpawner.Instance.PlaySoundEffect(_countdownThreeAudio);
+        await Task.Delay(1000);
+        AudioPlayerSpawner.Instance.PlaySoundEffect(_countdownTwoAudio);
+        await Task.Delay(1000);
+        AudioPlayerSpawner.Instance.PlaySoundEffect(_countdownOneAudio);
+        await Task.Delay(1000);
+        AudioPlayerSpawner.Instance.PlaySoundEffect(_countdownGoAudio);
     }
-
-    public void SetGameMode(GameMode mode)
-    {
-        _gameMode = mode;
-    }
-
-    private void StartLevel()
-    {
-        if (_lost) return;
-        _startTime = Time.time;
-
-        PlayerMovement bugToInstantiate;// = _bugPrefabs[Random.Range(0, _bugPrefabs.Length)];
-
-        switch(_gameMode)
-        {
-            case GameMode.Ants:
-                bugToInstantiate = _bugPrefabs[0];
-                break;
-            case GameMode.LadyBirds:
-                bugToInstantiate = _bugPrefabs[1];
-                break;
-            case GameMode.Caterpillars:
-                bugToInstantiate = _bugPrefabs[2];
-                break;
-            default:
-                bugToInstantiate = _bugPrefabs[Random.Range(0, _bugPrefabs.Length)];
-                break;
-        }
-
-        //TODO fix this shit
-        
-        var spawnPosition = _replayInputs.Count == 0
-            ? _defaultSpawnPosition
-            : _replayInputs[_replayInputs.Count - 1].StartPosition.Add(y: -1.5f);
-
-        var spawnRotation = Quaternion.Euler(0, 0, 0);
-        var spawnedBug = Instantiate(bugToInstantiate, spawnPosition, spawnRotation);
-        OnLevelStarted?.Invoke();
-    }
-}
-[System.Serializable]
-public enum GameMode
-{
-    Ants,
-    LadyBirds,
-    Caterpillars,
-    Random
 }
