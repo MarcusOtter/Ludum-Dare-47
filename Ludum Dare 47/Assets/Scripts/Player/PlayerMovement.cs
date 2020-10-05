@@ -39,6 +39,10 @@ public class PlayerMovement : MonoBehaviour
         }
         _canMove = true;
     }
+    public bool GetCanMove()
+    {
+        return _canMove;
+    }
 
     private void Update()
     {
@@ -99,6 +103,7 @@ public class PlayerMovement : MonoBehaviour
             p.color = new Color(.15f, .15f, .15f);
         }
         _canMove = false;
+        GameManager.Instance.EndGame();
     }
 
     private void OnTriggerEnter2D(Collider2D collider)

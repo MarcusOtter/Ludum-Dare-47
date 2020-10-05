@@ -44,6 +44,11 @@ public class PlayerDash : MonoBehaviour
         _dashing = false;
     }
 
+    public bool GetDashing()
+    {
+        return _dashing;
+    }
+
     private IEnumerator DashRoutine()
     {
         _dashing = true;
