@@ -43,9 +43,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d0ec8b11f498514ab9d33548cbd9b94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _bugPrefabs:
-  - {fileID: 3900748590742819808, guid: 90d3ce7a8e14f4747a15b06bd9a981f0, type: 3}
-  - {fileID: 3900748590742819808, guid: c59b3fc5ef8a7a7449b13b71a7b2e3e2, type: 3}
-  - {fileID: 3900748590742819808, guid: 2aa1613623b80884cb02216477dd1b1a, type: 3}
-  _defaultSpawnPosition: {x: -10, y: 0, z: 0}
-  _gameMode: 0
+  _timeUntilRewindInMs: 3000
+  _rewindDurationInMs: 3000
+  _clearThroatAudio: {fileID: 11400000, guid: 6b81d3651c1421e449690138944a70fe, type: 2}
+  _countdownThreeAudio: {fileID: 11400000, guid: f672b607515d8d54bb4336ac50542c89, type: 2}
+  _countdownTwoAudio: {fileID: 11400000, guid: fcf59d20ca4be854b8a6b1fe1cc79baf, type: 2}
+  _countdownOneAudio: {fileID: 11400000, guid: 31b270229c71f8e42b5b7745b2715aa5, type: 2}
+  _countdownGoAudio: {fileID: 11400000, guid: 1bfffca8a60f76e47807ef989da65835, type: 2}

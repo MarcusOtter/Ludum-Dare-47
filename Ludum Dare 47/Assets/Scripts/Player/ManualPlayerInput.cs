@@ -4,28 +4,21 @@ using UnityEngine;
 public class ManualPlayerInput : PlayerInput
 {
     private bool _left, _right, _dash;
-    private List<PlayerInputEntry> _playerInputs = new List<PlayerInputEntry>(64);
+    private readonly List<PlayerInputEntry> _playerInputs = new List<PlayerInputEntry>(64);
 
     private bool _isLogging;
-    private Vector3 _startPosition;
 
-
-    private void Start()
+    private void OnEnable()
     {
-        StartLogging();
+        GameManager.Instance.OnLevelStart += StartLogging;
+        GameManager.Instance.OnLevelFinish += StopLogging;
     }
 
-    //private void OnEnable()
-    //{
-    //    GameManager.Instance.OnLevelStarted += StartLogging;
-    //    GameManager.Instance.OnLevelCompleted += StopLogging;
-    //}
-
-    //private void OnDisable()
-    //{
-    //    GameManager.Instance.OnLevelStarted -= StartLogging;
-    //    GameManager.Instance.OnLevelCompleted -= StopLogging;
-    //}
+    private void OnDisable()
+    {
+        GameManager.Instance.OnLevelStart -= StartLogging;
+        GameManager.Instance.OnLevelFinish -= StopLogging;
+    }
 
     private void Update()
     {
@@ -64,22 +57,29 @@ public class ManualPlayerInput : PlayerInput
         }
     }
 
-    public ReplayInputs GetReplayInputs()
+    public override bool GetLeft()
     {
-        ReplayInputs replay = new ReplayInputs()
-        {
-            InputEntries = _playerInputs,
-            StartPosition = _startPosition,
-            BugType = BugType.Ant
-        };
+        return _left;
+    }
 
-        return replay;
+    public override bool GetRight()
+    {
+        return _right;
+    }
+
+    public override bool GetDash()
+    {
+        return _dash;
+    }
+
+    public PlayerInputEntry[] GetPlayerInputs()
+    {
+        return _playerInputs.ToArray();
     }
 
     private void StartLogging()
     {
         _isLogging = true;
-        _startPosition = transform.position;
     }
 
     private void StopLogging()
@@ -97,25 +97,5 @@ public class ManualPlayerInput : PlayerInput
         };
 
         _playerInputs.Add(inputEntry);
-    }
-
-    public override bool GetLeft()
-    {
-        return _left;
-    }
-
-    public override bool GetRight()
-    {
-        return _right;
-    }
-
-    public override bool GetDash()
-    {
-        return _dash;
-    }
-
-    public override Vector3 GetStartPosition()
-    {
-        return _startPosition;
     }
 }

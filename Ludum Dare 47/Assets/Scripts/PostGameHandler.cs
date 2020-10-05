@@ -1,16 +1,13 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using TMPro;
+
 public class PostGameHandler : MonoBehaviour
 {
     [SerializeField] private TMP_Text _scoreText, _highscoreText, _highScoreNotifier;
     private static int _highScore = 0;
 
-
     private void Awake()
     {
-
         _highScore = PlayerPrefs.GetInt(GetPlayerPrefsEntryString());
         GameManager.Instance.OnGameOver += EnablePanel;
         gameObject.SetActive(false);
@@ -24,30 +21,18 @@ public class PostGameHandler : MonoBehaviour
 
     private string GetPlayerPrefsEntryString()
     {
-
-        string playerprefsentry = "";
-
-        switch (GameManager.Instance.GetGameMode())
+        switch (GameManager.Instance.GetNextBugTypeToSpawn())
         {
-            case GameMode.Ants:
-                playerprefsentry = "AntsHighscore";
-                break;
-            case GameMode.LadyBirds:
-                playerprefsentry = "CaterpillarHighscore";
-                break;
-            case GameMode.Caterpillars:
-                playerprefsentry = "LadyBirdsHighscore";
-                break;
-            case GameMode.Random:
-                playerprefsentry = "RandomHighscore";
-                break;
+            case BugType.Ant: return "AntsHighscore";
+            case BugType.Ladybug: return "CaterpillarHighscore";
+            case BugType.Caterpillar: return "LadyBirdsHighscore";
+            case BugType.Random: return "RandomHighscore";
+            default: return "";
         }
-        return playerprefsentry;
     }
 
     private int GetHighscore()
     {
-
         int returnInt = Mathf.Max(PlayerPrefs.GetInt(GetPlayerPrefsEntryString()), _highScore);
         return returnInt;
     }
@@ -58,10 +43,12 @@ public class PostGameHandler : MonoBehaviour
         {
             return ScoreType.Highscore;
         }
+
         if(score == GetHighscore())
         {
             return ScoreType.HighscoreDuplicate;
         }
+
         return ScoreType.Nothing;
     }
 
@@ -69,7 +56,6 @@ public class PostGameHandler : MonoBehaviour
     {
         gameObject.SetActive(true);
         _scoreText.text = $"You scored: {score}";
-
 
         switch(SetHighscore(score))
         {
@@ -86,16 +72,9 @@ public class PostGameHandler : MonoBehaviour
                 _highScoreNotifier.gameObject.SetActive(true);
                 _highScoreNotifier.text = "Highscore Duplicate!";
                 break;
-
-            default:
-                break; 
-
         }
 
-
-        _highscoreText.text = $"Highscore: {GetHighscore()}"; //for some reason this only ever displays the score you last achieved and it's like 6:30 am I'm going to bed
-
-
+        _highscoreText.text = $"Highscore: {GetHighscore()}";
     }
 
     private enum ScoreType
@@ -104,6 +83,4 @@ public class PostGameHandler : MonoBehaviour
         HighscoreDuplicate,
         Nothing
     }
-
 }
-

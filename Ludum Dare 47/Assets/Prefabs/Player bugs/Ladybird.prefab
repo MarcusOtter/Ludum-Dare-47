@@ -50,7 +50,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b24b9414db16414d9a45520c5169064, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _bugType: 0
+  _bugType: 1
   _movementSpeed: 2
   _turningSpeed: 90
 --- !u!114 &3900748590742819809

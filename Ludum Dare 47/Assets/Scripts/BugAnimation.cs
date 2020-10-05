@@ -14,7 +14,7 @@ public class BugAnimation : MonoBehaviour
 
     private void Awake()
     {
-        GameManager.Instance.OnLevelStarted += SetGraphicsInATinyBit;
+        GameManager.Instance.OnLevelStart += SetGraphicsInATinyBit;
 
         _dashingHash = Animator.StringToHash("Dashing");
         _stoppedHash = Animator.StringToHash("Stopped");
@@ -22,7 +22,7 @@ public class BugAnimation : MonoBehaviour
 
     private void OnDestroy()
     {
-        GameManager.Instance.OnLevelStarted -= SetGraphicsInATinyBit;
+        GameManager.Instance.OnLevelStart -= SetGraphicsInATinyBit;
     }
 
     private void Start()
