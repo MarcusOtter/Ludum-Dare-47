@@ -605,9 +605,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7cb80f1030454c648801de05cfa6d1fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _distance: 5
-  _time: 0.25
-  _lingerTime: 3
+  _distance: 4
+  _time: 0.15
+  _lingerTime: 2
 --- !u!1001 &1364299343139767162
 PrefabInstance:
   m_ObjectHideFlags: 0
