@@ -9,18 +9,18 @@ public class CustomAudioClip : ScriptableObject
     [Header("Volume")]
     [SerializeField, Range(0, 1)] private float _baseVolume = 0.5f;
     [SerializeField] private bool _hasRandomVolume;
-    [SerializeField, Range(0, 1)] private float _maxVolume;
-    [SerializeField, Range(0, 1)] private float _minVolume;
+    [SerializeField, Range(0, 1)] private float _maxVolume = 0.5f;
+    [SerializeField, Range(0, 1)] private float _minVolume = 0.5f;
 
     [Header("Audio clips")]
     [SerializeField] private bool _hasRandomClip;
     [SerializeField] private AudioClip[] _audioClips;
 
     [Header("Pitch")]
-    [SerializeField, Range(0, 4)] private float _basePitch = 1f;
+    [SerializeField, Range(0, 2)] private float _basePitch = 1f;
     [SerializeField] private bool _hasRandomPitch;
-    [SerializeField, Range(0, 1)] private float _maxPitch;
-    [SerializeField, Range(0, 1)] private float _minPitch;
+    [SerializeField, Range(0, 2)] private float _maxPitch = 1f;
+    [SerializeField, Range(0, 2)] private float _minPitch = 1f;
 
     public AudioClip GetClip()
     {
