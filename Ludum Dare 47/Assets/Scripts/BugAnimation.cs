@@ -14,15 +14,16 @@ public class BugAnimation : MonoBehaviour
 
     private void Awake()
     {
-        GameManager.Instance.OnLevelStart += SetGraphicsInATinyBit;
+        GameManager.Instance.OnPrepareNewLevel += SetGraphicsInATinyBit;
 
         _dashingHash = Animator.StringToHash("Dashing");
         _stoppedHash = Animator.StringToHash("Stopped");
+        SetGraphics();
     }
 
     private void OnDestroy()
     {
-        GameManager.Instance.OnLevelStart -= SetGraphicsInATinyBit;
+        GameManager.Instance.OnPrepareNewLevel -= SetGraphicsInATinyBit;
     }
 
     private void Start()
@@ -54,7 +55,7 @@ public class BugAnimation : MonoBehaviour
         SetGraphics();
     }
 
-    private void SetGraphics()
+    public void SetGraphics()
     {
         // No idea how this is gonna work with caterpillar which has like 1000 children but uh yea
         if (transform.childCount > 0) Destroy(transform.GetChild(0).gameObject); //https://youtu.be/ZjOAwBtRD54

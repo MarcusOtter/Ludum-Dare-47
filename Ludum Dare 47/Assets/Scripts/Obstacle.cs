@@ -21,4 +21,19 @@ public class Obstacle : MonoBehaviour
             if (_clip != null) AudioPlayerSpawner.Instance.PlaySoundEffect(_clip);
         }
     }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        var p = collision.collider.GetComponent<PlayerMovement>();
+        if (p != null)
+        {
+            if (_kill) p.Die();
+            p.GetComponent<Rigidbody2D>().AddForce(_pushVector);
+            if (_scaleDown)
+            {
+                LeanTween.scale(p.gameObject, Vector2.zero, 0.5f);
+            }
+            if (_clip != null) AudioPlayerSpawner.Instance.PlaySoundEffect(_clip);
+        }
+    }
 }

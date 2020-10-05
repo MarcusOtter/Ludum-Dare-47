@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 8853751038066314313}
   - component: {fileID: 2910876339778942208}
   - component: {fileID: 5004370051677210351}
+  - component: {fileID: 2365497734367193542}
   m_Layer: 0
   m_Name: New Sprite
   m_TagString: DashBox
@@ -109,6 +110,25 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 7, y: 2}
   m_EdgeRadius: 0
+--- !u!95 &2365497734367193542
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1542936662463189613}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 876b566531074704e96ee675ae8474a0, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &5283226544653448766
 GameObject:
   m_ObjectHideFlags: 0
@@ -124,7 +144,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8941739507098266059
 Transform:
   m_ObjectHideFlags: 0

@@ -38,18 +38,10 @@ public class GameManager : SingletonBehaviour<GameManager>
         AssertSingleton(this);
     }
 
-    private async void Update()
-    {
-        //for testing purposes
-        if (Input.GetKeyDown(KeyCode.O))
-        {
-            _lost = false;
-            await StartMainLoop();
-        }
-    }
-
     public async Task StartMainLoop()
     {
+        _lost = false;
+
         AudioPlayerSpawner.Instance.PlaySoundEffect(_clearThroatAudio);
         await Task.Delay(1500);
         OnPrepareNewLevel?.Invoke();

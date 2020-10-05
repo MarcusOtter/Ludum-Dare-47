@@ -19,14 +19,6 @@ public class PlayOnEvent : MonoBehaviour
         GameManager.Instance.OnLevelFinish += PlayStuff;
     }
 
-    private void Update()
-    {
-        if(Input.GetKeyDown(KeyCode.Y))
-        {
-            PlayStuff();
-        }
-    }
-
     private void PlayStuff()
     {
         if(_particles != null) _particles.Play();

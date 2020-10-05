@@ -292,25 +292,6 @@ HingeJoint2D:
   m_AngleLimits:
     m_LowerAngle: -90
     m_UpperAngle: 90
---- !u!95 &2365497734367193542
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 542520744147325207}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 876b566531074704e96ee675ae8474a0, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &3900748590742819811
 GameObject:
   m_ObjectHideFlags: 0
@@ -487,45 +468,9 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3900748590742819810}
     m_Modifications:
-    - target: {fileID: 2910876339778942208, guid: 653435e40d36c964ba41dd09728aef4e, type: 3}
-      propertyPath: m_FlipX
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5004370051677210351, guid: 653435e40d36c964ba41dd09728aef4e, type: 3}
-      propertyPath: m_SpriteTilingProperty.border.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5004370051677210351, guid: 653435e40d36c964ba41dd09728aef4e, type: 3}
-      propertyPath: m_SpriteTilingProperty.border.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5004370051677210351, guid: 653435e40d36c964ba41dd09728aef4e, type: 3}
-      propertyPath: m_SpriteTilingProperty.border.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5004370051677210351, guid: 653435e40d36c964ba41dd09728aef4e, type: 3}
-      propertyPath: m_SpriteTilingProperty.border.w
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5004370051677210351, guid: 653435e40d36c964ba41dd09728aef4e, type: 3}
-      propertyPath: m_SpriteTilingProperty.oldSize.x
-      value: 6.68
-      objectReference: {fileID: 0}
-    - target: {fileID: 5004370051677210351, guid: 653435e40d36c964ba41dd09728aef4e, type: 3}
-      propertyPath: m_SpriteTilingProperty.oldSize.y
-      value: 2.26
-      objectReference: {fileID: 0}
     - target: {fileID: 5283226544653448766, guid: 653435e40d36c964ba41dd09728aef4e, type: 3}
       propertyPath: m_Name
       value: DashHitBox
-      objectReference: {fileID: 0}
-    - target: {fileID: 5283226544653448766, guid: 653435e40d36c964ba41dd09728aef4e, type: 3}
-      propertyPath: m_TagString
-      value: DashBox
-      objectReference: {fileID: 0}
-    - target: {fileID: 5283226544653448766, guid: 653435e40d36c964ba41dd09728aef4e, type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8941739507098266059, guid: 653435e40d36c964ba41dd09728aef4e, type: 3}
       propertyPath: m_LocalPosition.x
@@ -576,10 +521,5 @@ PrefabInstance:
 --- !u!4 &7996571815731145393 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8941739507098266059, guid: 653435e40d36c964ba41dd09728aef4e, type: 3}
-  m_PrefabInstance: {fileID: 1364299343139767162}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &542520744147325207 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1542936662463189613, guid: 653435e40d36c964ba41dd09728aef4e, type: 3}
   m_PrefabInstance: {fileID: 1364299343139767162}
   m_PrefabAsset: {fileID: 0}
