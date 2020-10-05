@@ -107,6 +107,6 @@ public class AudioPlayer : MonoBehaviour
     private IEnumerator ReturnToPoolDelayed(float delayInSeconds)
     {
         yield return new WaitForSeconds(delayInSeconds);
-        AudioPlayerPool.Instance.AddToPool(this);
+        AudioPlayerPool.Instance.ReturnAndDisable(this);
     }
 }

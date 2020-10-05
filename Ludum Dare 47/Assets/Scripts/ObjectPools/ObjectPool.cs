@@ -23,7 +23,7 @@ public abstract class ObjectPool<T> : SingletonBehaviour<ObjectPool<T>> where T 
         AddObjectsToPool(_initialSize);
     }
 
-    public T Get()
+    public T GetNewAndEnable()
     {
         if (_pool.Count == 0)
         {
@@ -31,11 +31,18 @@ public abstract class ObjectPool<T> : SingletonBehaviour<ObjectPool<T>> where T 
         }
 
         var obj = _pool.Dequeue();
+
+        if (obj == null)
+        {
+            // Idk editor gives me errors when I stop playing if I don't have this
+            return null;
+        }
+
         obj.gameObject.SetActive(true);
         return obj;
     }
 
-    public void AddToPool(T obj)
+    public void ReturnAndDisable(T obj)
     {
         obj.gameObject.SetActive(false);
         _pool.Enqueue(obj);
@@ -45,6 +52,7 @@ public abstract class ObjectPool<T> : SingletonBehaviour<ObjectPool<T>> where T 
     {
         for (var i = 0; i < amount; i++)
         {
+            if (transform == null) { return; } // dear lord
             var obj = Instantiate(_prefab, transform);
             obj.gameObject.SetActive(false);
             _pool.Enqueue(obj);

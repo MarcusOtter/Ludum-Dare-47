@@ -1,6 +1,7 @@
 ﻿public enum BugType
 {
-    Caterpillar,
     Ant,
-    Snail
+    Ladybug,
+    Caterpillar,
+    Random // Used when game mode is supposed to spawn random insect
 }

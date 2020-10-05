@@ -1,27 +1,26 @@
 ﻿using System;
-using UnityEngine;
 
 public class AutomaticPlayerInput : PlayerInput
 {
-    private ReplayInputs _replayInputs;
+    private PlayerInputEntry[] _inputEntries;
     private int _inputIndex;
 
     private bool _left, _right, _dash;
 
     private void OnEnable()
     {
-        GameManager.Instance.OnLevelStarted += ResetCurrentInput;
+        GameManager.Instance.OnLevelStart += ResetCurrentInput;
     }
 
     private void OnDisable()
     {
-        GameManager.Instance.OnLevelStarted -= ResetCurrentInput;
+        GameManager.Instance.OnLevelStart -= ResetCurrentInput;
     }
 
     private void Update()
     {
-        if (_inputIndex >= _replayInputs.InputEntries.Count) { return; }
-        var inputEntry = _replayInputs.InputEntries[_inputIndex];
+        if (_inputIndex >= _inputEntries.Length) { return; }
+        var inputEntry = _inputEntries[_inputIndex];
 
         if (GameManager.Instance.GetTimeSinceLevelStart() >= inputEntry.TimeOffset)
         {
@@ -30,9 +29,9 @@ public class AutomaticPlayerInput : PlayerInput
         }
     }
 
-    public void SetInputs(ReplayInputs inputs)
+    public void SetInputs(PlayerInputEntry[] inputs)
     {
-        _replayInputs = inputs;
+        _inputEntries = inputs;
     }
 
     public void ApplyInput(PlayerInputEntry replay)
@@ -73,11 +72,6 @@ public class AutomaticPlayerInput : PlayerInput
             return true;
         }
         return false;
-    }
-
-    public override Vector3 GetStartPosition()
-    {
-        return _replayInputs.StartPosition;
     }
 
     private void ResetCurrentInput()

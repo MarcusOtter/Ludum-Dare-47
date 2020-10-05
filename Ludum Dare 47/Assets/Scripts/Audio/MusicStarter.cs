@@ -6,7 +6,7 @@ public class MusicStarter : MonoBehaviour
     [SerializeField] private MusicFadeSettings _fadeSettings;
     [SerializeField] private CustomAudioClip _musicToPlayOnStart;
 
-    private async Task Start()
+    private async void Start()
     {
         if (_musicToPlayOnStart == null) { return; }
 
