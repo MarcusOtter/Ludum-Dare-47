@@ -58,6 +58,7 @@ public class PlayerDash : MonoBehaviour
         var dashHitBoxTransform = _dashHitBox.transform; // For performance
 
         _dashHitBox.gameObject.SetActive(true);
+        _dashHitBox.GetComponentInChildren<SpriteRenderer>().flipY = _rb.velocity.x > 0f;
 
         Vector2 startPos = _dashHitBox.position;
 
