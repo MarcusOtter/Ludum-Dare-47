@@ -15,7 +15,7 @@ public class GameManager : SingletonBehaviour<GameManager>
     private bool _lost = false; 
 
     [SerializeField] private PlayerMovement[] _bugPrefabs;
-    [SerializeField] private Vector3 _defaultSpawnPosition = new Vector3();
+    [SerializeField] private Vector3 _defaultSpawnPosition;
 
 
     [SerializeField] private GameMode _gameMode;

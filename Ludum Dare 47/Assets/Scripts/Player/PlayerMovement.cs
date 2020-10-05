@@ -13,6 +13,8 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody2D _rigidbody;
     private PlayerInput _input;
     private PlayerDash _playerDash;
+    private Transform _spawnPoint;
+
     private bool _canMove = true;
 
     // Since we want to listen to the events even if the ghost is inactive,
@@ -33,6 +35,26 @@ public class PlayerMovement : MonoBehaviour
         GameManager.Instance.OnLevelStarted -= ResetPosition;
     }
 
+    private void Update()
+    {
+        if (!_canMove) { return; }
+
+        _rigidbody.velocity = transform.right * _movementSpeed;
+        _rigidbody.angularVelocity = -GetCurrentRotationDelta();
+
+        if (_input.GetDash()) OnDash?.Invoke();
+    }
+
+    public bool GetCanMove()
+    {
+        return _canMove;
+    }
+
+    public void SetNewInput(PlayerInput playerInput)
+    {
+        _input = playerInput;
+    }
+
     private void Reactivate()
     {
         gameObject.SetActive(true);
@@ -41,26 +63,6 @@ public class PlayerMovement : MonoBehaviour
             p.color = new Color(255, 255, 255);
         }
         _canMove = true;
-    }
-
-    public bool GetCanMove()
-    {
-        return _canMove;
-    }
-
-    private void Update()
-    {
-        if (!_canMove) { return; } 
-
-        _rigidbody.velocity = transform.right * GetSpeed();
-        _rigidbody.angularVelocity = -GetCurrentRotationDelta();
-
-        if (_input.GetDash()) OnDash?.Invoke();
-    }
-
-    public void SetNewInput(PlayerInput playerInput)
-    {
-        _input = playerInput;
     }
 
     private float GetTurningSpeed()
@@ -91,12 +93,6 @@ public class PlayerMovement : MonoBehaviour
         if (_input is ManualPlayerInput) return;
         transform.position = _input.GetStartPosition();
         transform.rotation = Quaternion.Euler(0,0,0);
-    }
-
-    private float GetSpeed()
-    {
-        return _movementSpeed;
-        //add thing for different insects here
     }
 
     private void Die()
@@ -149,7 +145,7 @@ public class PlayerMovement : MonoBehaviour
         Destroy(manualInput);
 
         // Hard code is good code
-        // Also this needs to happen on all the layers of the children (e.g for caterpillar)
+        // Also TODO this needs to happen on all the layers of the children (e.g for caterpillar)
         gameObject.layer = 9;
 
         GameManager.Instance.EndLevel(replayInputs);
