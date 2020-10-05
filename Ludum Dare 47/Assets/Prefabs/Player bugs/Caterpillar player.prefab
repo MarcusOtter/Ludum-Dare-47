@@ -137,7 +137,7 @@ HingeJoint2D:
   m_BreakTorque: Infinity
   m_AutoConfigureConnectedAnchor: 1
   m_Anchor: {x: 1.4, y: 0}
-  m_ConnectedAnchor: {x: 0.06999997, y: 0.000000003059796}
+  m_ConnectedAnchor: {x: 0.07000016, y: 0.000000003059804}
   m_UseMotor: 0
   m_Motor:
     m_MotorSpeed: 0
@@ -283,7 +283,7 @@ HingeJoint2D:
   m_BreakTorque: Infinity
   m_AutoConfigureConnectedAnchor: 1
   m_Anchor: {x: 1.4, y: 0}
-  m_ConnectedAnchor: {x: 0.07000027, y: 0.0000000030598089}
+  m_ConnectedAnchor: {x: 0.07000016, y: 0.000000003059804}
   m_UseMotor: 0
   m_Motor:
     m_MotorSpeed: 0
@@ -429,7 +429,7 @@ HingeJoint2D:
   m_BreakTorque: Infinity
   m_AutoConfigureConnectedAnchor: 1
   m_Anchor: {x: 1.4, y: 0}
-  m_ConnectedAnchor: {x: 0.07000027, y: 0.0000000030598089}
+  m_ConnectedAnchor: {x: 0.07000016, y: 0.000000003059804}
   m_UseMotor: 0
   m_Motor:
     m_MotorSpeed: 0
@@ -490,7 +490,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b24b9414db16414d9a45520c5169064, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BugType: 0
+  _bugType: 0
   _movementSpeed: 2
   _turningSpeed: 90
 --- !u!114 &3900748590742819809
@@ -608,7 +608,6 @@ MonoBehaviour:
   _distance: 5
   _time: 0.25
   _lingerTime: 3
-  _dashHitboxPrefab: {fileID: 0}
 --- !u!1001 &1364299343139767162
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -702,11 +701,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8941739507098266059, guid: 653435e40d36c964ba41dd09728aef4e, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.22
+      value: -5
       objectReference: {fileID: 0}
     - target: {fileID: 8941739507098266059, guid: 653435e40d36c964ba41dd09728aef4e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 8941739507098266059, guid: 653435e40d36c964ba41dd09728aef4e, type: 3}
       propertyPath: m_LocalPosition.z

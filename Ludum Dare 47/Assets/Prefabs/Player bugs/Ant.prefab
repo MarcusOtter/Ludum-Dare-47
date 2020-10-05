@@ -343,7 +343,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b24b9414db16414d9a45520c5169064, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BugType: 0
+  _bugType: 0
   _movementSpeed: 4
   _turningSpeed: 180
 --- !u!114 &3900748590742819809
@@ -461,7 +461,6 @@ MonoBehaviour:
   _distance: 5
   _time: 0.25
   _lingerTime: 3
-  _dashHitboxPrefab: {fileID: 0}
 --- !u!1001 &1364299343139767162
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -555,11 +554,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8941739507098266059, guid: 653435e40d36c964ba41dd09728aef4e, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.22
+      value: -4
       objectReference: {fileID: 0}
     - target: {fileID: 8941739507098266059, guid: 653435e40d36c964ba41dd09728aef4e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 8941739507098266059, guid: 653435e40d36c964ba41dd09728aef4e, type: 3}
       propertyPath: m_LocalPosition.z

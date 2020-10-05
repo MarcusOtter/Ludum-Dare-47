@@ -30,7 +30,7 @@ public class BugAnimation : MonoBehaviour
         _animator = GetComponentInParent<Animator>();
         _dash = GetComponentInParent<PlayerDash>();
         _playerMovement = GetComponentInParent<PlayerMovement>();
-        SetGraphics();
+        //SetGraphics();
     }
 
     private void Update()
@@ -41,7 +41,7 @@ public class BugAnimation : MonoBehaviour
 
     private void SetGraphicsInATinyBit() //Since the input has to be swapped first in order for it to work
     {
-        StartCoroutine(SetGraphicsDelayed(0.01f));
+        //StartCoroutine(SetGraphicsDelayed(0.01f));
     }
 
     private IEnumerator SetGraphicsDelayed(float delayInSeconds)

@@ -1,13 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
 [RequireComponent(typeof(UIUtilities))]
 public class UIButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPointerEnterHandler, IPointerExitHandler
 {
-    [SerializeField] private AudioClip _onHoverSound, _onExitSound, _onClickDownSound, _onClickUpSound;
+    [SerializeField] private CustomAudioClip _onHoverSound, _onExitSound, _onClickDownSound, _onClickUpSound;
     private bool _hovering;
     [SerializeField] private UnityEvent _clickEvent;
     [SerializeField] private float _onClickScale = 0.9f;
@@ -17,11 +15,13 @@ public class UIButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, I
     {
         _baseScale = transform.localScale;
     }
+
     public void OnPointerEnter(PointerEventData eventData)
     {
         _hovering = true;
         PlaySound(_onHoverSound);
     }
+
     public void OnPointerExit(PointerEventData eventData)
     {
         LeanTween.cancel(gameObject);
@@ -29,6 +29,7 @@ public class UIButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, I
         PlaySound(_onExitSound);
         _hovering = false;
     }
+
     public void OnPointerDown(PointerEventData eventData)
     {
         PlaySound(_onClickDownSound);
@@ -47,8 +48,9 @@ public class UIButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, I
         LeanTween.scale(gameObject, _baseScale, 0.3f).setEase(LeanTweenType.easeOutSine);
     }
 
-    private void PlaySound(AudioClip clip)
+    private void PlaySound(CustomAudioClip clip)
     {
-        //insert actually playing the sound with whatever system we have here
+        if (clip == null) { return; }
+        AudioPlayerSpawner.Instance.PlaySoundEffect(clip);
     }
 }

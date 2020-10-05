@@ -5,22 +5,24 @@ using System;
 public class PlayerMovement : MonoBehaviour
 {
     public Action OnDash;
-    public BugType BugType;
-    
+
+    [SerializeField] private BugType _bugType;
     [SerializeField] private float _movementSpeed = 2f;
     [SerializeField] private float _turningSpeed = 90f;
 
     private Rigidbody2D _rigidbody;
     private PlayerInput _input;
+    private PlayerDash _playerDash;
     private bool _canMove = true;
 
-
     // Since we want to listen to the events even if the ghost is inactive,
-    // it's in awake and OnDestroy instead of OnEnable and OnDisable
+    // we subscribe to events in Awake and OnDestroy instead of OnEnable and OnDisable
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody2D>();
         _input = GetComponent<PlayerInput>();
+        _playerDash = GetComponent<PlayerDash>();
+
         GameManager.Instance.OnLevelStarted += ResetPosition;
         GameManager.Instance.OnLevelStarted += Reactivate;
     }
@@ -99,11 +101,20 @@ public class PlayerMovement : MonoBehaviour
 
     private void Die()
     {
+        _canMove = false;
+
+        _rigidbody.angularVelocity = 0f;
+        _rigidbody.velocity = Vector2.zero;
+
+        if (_playerDash != null && _playerDash.IsDashing())
+        {
+            _playerDash.StopDashingImmediately();
+        }
+
         foreach(var p in GetComponentsInChildren<SpriteRenderer>())
         {
             p.color = new Color(.15f, .15f, .15f);
         }
-        _canMove = false;
 
         if (_input is ManualPlayerInput)
         {

@@ -19,13 +19,13 @@ public class PlayerDash : MonoBehaviour
     private void OnEnable()
     {
         GetComponent<PlayerMovement>().OnDash += Dash;
-        GameManager.Instance.OnLevelStarted += TurnOffDashBox;
+        GameManager.Instance.OnLevelStarted += StopDashingImmediately;
     }
 
     private void OnDisable()
     {
         GetComponent<PlayerMovement>().OnDash -= Dash;
-        GameManager.Instance.OnLevelStarted -= TurnOffDashBox;
+        GameManager.Instance.OnLevelStarted -= StopDashingImmediately;
     }
 
     public bool IsDashing()
@@ -38,7 +38,7 @@ public class PlayerDash : MonoBehaviour
         if(!_isDashing)StartCoroutine(DashRoutine());
     }
 
-    private void TurnOffDashBox()
+    public void StopDashingImmediately()
     {
         StopAllCoroutines();
         _dashHitBox.gameObject.SetActive(false);
@@ -49,16 +49,20 @@ public class PlayerDash : MonoBehaviour
     private IEnumerator DashRoutine()
     {
         _isDashing = true;
-        float speed = _distance / _time;
-        float startTime = GameManager.Instance.GetTimeSinceLevelStart();
+        var speed = _distance / _time;
+        var startTime = GameManager.Instance.GetTimeSinceLevelStart();
+        var dashHitBoxTransform = _dashHitBox.transform; // For performance
+
         _dashHitBox.gameObject.SetActive(true);
 
         Vector2 startPos = _dashHitBox.position;
 
         while (GameManager.Instance.GetTimeSinceLevelStart() < startTime + _time)
         {
-            _dashHitBox.transform.right = startPos - (Vector2)_dashHitBox.transform.position;
-            _dashHitBox.localScale = _dashHitBox.transform.localScale.With(x: -(startPos - (Vector2)_dashHitBox.transform.position).magnitude / transform.localScale.x);
+            var hitBoxPosition = (Vector2) dashHitBoxTransform.position; // For performance
+
+            dashHitBoxTransform.right = startPos - hitBoxPosition;
+            _dashHitBox.localScale = dashHitBoxTransform.localScale.With(x: -(startPos - hitBoxPosition).magnitude / transform.localScale.x);
             
             if (GameManager.Instance.GetTimeSinceLevelStart() < startTime) break; //Means we've restarted
             _rb.velocity = transform.right * speed;
