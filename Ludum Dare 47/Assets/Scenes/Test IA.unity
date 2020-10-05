@@ -477,8 +477,8 @@ MonoBehaviour:
   - {fileID: 1257170270}
   - {fileID: 1611352567}
   m_Bounds:
-    m_Center: {x: -0.052458644, y: -0.9116374, z: 0}
-    m_Extent: {x: 1.6636832, y: 1.0240341, z: 0}
+    m_Center: {x: -0.034264922, y: -0.8763354, z: 0}
+    m_Extent: {x: 1.6657364, y: 0.98366547, z: 0}
   m_UseBatching: 1
   m_AlwaysUpdate: 1
 --- !u!212 &148755539
@@ -5442,7 +5442,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &265751663
 Transform:
   m_ObjectHideFlags: 0
@@ -5645,7 +5645,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &453122524
 Transform:
   m_ObjectHideFlags: 0
@@ -10514,7 +10514,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &562176431
 Transform:
   m_ObjectHideFlags: 0
@@ -11014,7 +11014,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1009909929
 Transform:
   m_ObjectHideFlags: 0
@@ -11373,7 +11373,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: e1e9b0a303f87c6498627d8773536c14, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.7176471}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -11506,7 +11506,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1538621832
 Transform:
   m_ObjectHideFlags: 0
@@ -11536,7 +11536,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1554070667
 Transform:
   m_ObjectHideFlags: 0
@@ -16902,7 +16902,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1926759577
 Transform:
   m_ObjectHideFlags: 0
@@ -16935,7 +16935,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!95 &2016664453
 Animator:
   serializedVersion: 3
@@ -16977,8 +16977,8 @@ MonoBehaviour:
   - {fileID: 453122524}
   - {fileID: 562176431}
   m_Bounds:
-    m_Center: {x: -1.6181979, y: -0.081380844, z: 0}
-    m_Extent: {x: 5.869141, y: 5.2391973, z: 0}
+    m_Center: {x: -1.6174273, y: -0.10791969, z: 0}
+    m_Extent: {x: 5.868763, y: 5.217616, z: 0}
   m_UseBatching: 1
   m_AlwaysUpdate: 1
 --- !u!212 &2016664455
