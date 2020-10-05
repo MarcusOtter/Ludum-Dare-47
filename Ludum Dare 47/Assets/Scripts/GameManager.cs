@@ -27,7 +27,6 @@ public class GameManager : SingletonBehaviour<GameManager>
     [SerializeField] private CustomAudioClip _countdownOneAudio;
     [SerializeField] private CustomAudioClip _countdownGoAudio;
 
-
     private BugType _nextBugTypeToSpawn;
     private float _startTime;
     private bool _lost;
@@ -58,8 +57,10 @@ public class GameManager : SingletonBehaviour<GameManager>
         OnLevelFinish?.Invoke();
         await Task.Delay(_timeUntilRewindInMs);
         OnRewindBegin?.Invoke(_rewindDurationInMs);
+        AudioSettings.Instance.BasePitch = -1f;
         await Task.Delay(_rewindDurationInMs);
         OnRewindEnd?.Invoke();
+        AudioSettings.Instance.BasePitch = 1;
 
         await StartMainLoop();
     }

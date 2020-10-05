@@ -69,6 +69,5 @@ public class BugAnimation : MonoBehaviour
             Instantiate(_noHelmetGraphics, transform);
         }
         _animator = GetComponentInChildren<Animator>();
-        print(_animator);
     }
 }

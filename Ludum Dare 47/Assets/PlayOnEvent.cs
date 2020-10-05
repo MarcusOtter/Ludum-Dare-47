@@ -3,7 +3,7 @@
 public class PlayOnEvent : MonoBehaviour
 {
     private ParticleSystem _particles;
-    private CustomAudioClip _clip;
+    [SerializeField] private CustomAudioClip _clip;
 
     private void Awake()
     {
