@@ -21,7 +21,6 @@ public class GameManager : SingletonBehaviour<GameManager>
     [SerializeField] private int _rewindDurationInMs = 3000;
 
     [Header("Countdown audio")]
-    [SerializeField] private CustomAudioClip _clearThroatAudio;
     [SerializeField] private CustomAudioClip _countdownThreeAudio;
     [SerializeField] private CustomAudioClip _countdownTwoAudio;
     [SerializeField] private CustomAudioClip _countdownOneAudio;
@@ -41,7 +40,6 @@ public class GameManager : SingletonBehaviour<GameManager>
     {
         _lost = false;
 
-        AudioPlayerSpawner.Instance.PlaySoundEffect(_clearThroatAudio);
         await Task.Delay(1500);
         OnPrepareNewLevel?.Invoke();
         await Task.Delay(1500);

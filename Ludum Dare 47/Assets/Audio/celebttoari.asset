@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: celebttoari
   m_EditorClassIdentifier: 
   IsMusic: 0
-  _baseVolume: 0.2
+  _baseVolume: 0.15
   _hasRandomVolume: 0
   _maxVolume: 0.5
   _minVolume: 0.5

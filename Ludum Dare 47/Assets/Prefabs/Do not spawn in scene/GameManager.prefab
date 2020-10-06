@@ -45,8 +45,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _timeUntilRewindInMs: 3000
   _rewindDurationInMs: 3000
-  _clearThroatAudio: {fileID: 11400000, guid: 6b81d3651c1421e449690138944a70fe, type: 2}
-  _countdownThreeAudio: {fileID: 11400000, guid: f672b607515d8d54bb4336ac50542c89, type: 2}
+  _countdownThreeAudio: {fileID: 11400000, guid: 31b270229c71f8e42b5b7745b2715aa5, type: 2}
   _countdownTwoAudio: {fileID: 11400000, guid: fcf59d20ca4be854b8a6b1fe1cc79baf, type: 2}
   _countdownOneAudio: {fileID: 11400000, guid: 31b270229c71f8e42b5b7745b2715aa5, type: 2}
   _countdownGoAudio: {fileID: 11400000, guid: 1bfffca8a60f76e47807ef989da65835, type: 2}

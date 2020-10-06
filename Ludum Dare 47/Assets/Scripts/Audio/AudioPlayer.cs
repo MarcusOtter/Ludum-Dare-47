@@ -48,6 +48,7 @@ public class AudioPlayer : MonoBehaviour
         _audioSource.volume = customAudioClip.GetVolume();
         _audioSource.pitch = customAudioClip.GetPitch();
 
+        if (customAudioClip.name == "clear-throat" || customAudioClip.name == "countdown-three") { return; }
         _audioSource.PlayDelayed(delayInSeconds);
 
         if (!customAudioClip.IsMusic)

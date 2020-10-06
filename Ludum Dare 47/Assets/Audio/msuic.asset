@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: msuic
   m_EditorClassIdentifier: 
   IsMusic: 1
-  _baseVolume: 0.5
+  _baseVolume: 0.25
   _hasRandomVolume: 0
   _maxVolume: 0.5
   _minVolume: 0.5
