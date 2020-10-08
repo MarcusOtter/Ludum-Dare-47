@@ -1,4 +1,4 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections;
 using UnityEngine;
 
 public class AudioPlayerSpawner : SingletonBehaviour<AudioPlayerSpawner>
@@ -11,7 +11,7 @@ public class AudioPlayerSpawner : SingletonBehaviour<AudioPlayerSpawner>
         AssertSingleton(this);
     }
 
-    public async Task PlayNewMusicAsync(CustomAudioClip newMusic, MusicFadeSettings overrideFadeSettings = null)
+    public void PlayNewMusicAsync(CustomAudioClip newMusic, MusicFadeSettings overrideFadeSettings = null)
     {
         if (!newMusic.IsMusic)
         {
@@ -19,15 +19,20 @@ public class AudioPlayerSpawner : SingletonBehaviour<AudioPlayerSpawner>
             return;
         }
 
+        StartCoroutine(PlayNewMusicCoroutine(newMusic, overrideFadeSettings));
+    }
+
+    private IEnumerator PlayNewMusicCoroutine(CustomAudioClip newMusic, MusicFadeSettings overrideFadeSettings = null)
+    {
         var fadeSettings = overrideFadeSettings ?? _defaultMusicFadeSettings;
 
         if (_currentMusicPlayer != null)
         {
-            await StopCurrentMusic(fadeSettings);
-            await Task.Delay((int) (_defaultMusicFadeSettings.DelayBetweenSongsInSeconds * 1000f));
+            StopCurrentMusic(fadeSettings);
+            yield return new WaitForSeconds(_defaultMusicFadeSettings.DelayBetweenSongsInSeconds);
         }
 
-        await StartNewMusic(newMusic, fadeSettings);
+        StartNewMusic(newMusic, fadeSettings);
     }
 
     public void PlaySoundEffect(CustomAudioClip customAudioClip, ulong delayInSeconds = 0L)
@@ -43,18 +48,18 @@ public class AudioPlayerSpawner : SingletonBehaviour<AudioPlayerSpawner>
         AudioPlayerPool.Instance.GetNewAndEnable()?.Play(customAudioClip, delayInSeconds);
     }
 
-    private async Task StopCurrentMusic(MusicFadeSettings fadeSettings)
+    private void StopCurrentMusic(MusicFadeSettings fadeSettings)
     {
-        await _currentMusicPlayer.FadeOutAsync(fadeSettings);
+        _currentMusicPlayer.FadeOutAsync(fadeSettings);
         AudioPlayerPool.Instance.ReturnAndDisable(_currentMusicPlayer);
         _currentMusicPlayer = null;
     }
 
-    private async Task StartNewMusic(CustomAudioClip customAudioClip, MusicFadeSettings fadeSettings)
+    private void StartNewMusic(CustomAudioClip customAudioClip, MusicFadeSettings fadeSettings)
     {
         var audioPlayer = AudioPlayerPool.Instance.GetNewAndEnable();
         audioPlayer.Play(customAudioClip);
         _currentMusicPlayer = audioPlayer;
-        await audioPlayer.FadeInAsync(fadeSettings);
+        audioPlayer.FadeInAsync(fadeSettings);
     }
 }

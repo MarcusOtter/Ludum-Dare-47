@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Threading.Tasks;
 using UnityEngine;
 
 [RequireComponent(typeof(AudioSource))]
@@ -57,7 +56,12 @@ public class AudioPlayer : MonoBehaviour
         }
     }
 
-    public async Task FadeOutAsync(MusicFadeSettings fadeSettingsOverride = null)
+    public void FadeOutAsync(MusicFadeSettings fadeSettingsOverride = null)
+    {
+        StartCoroutine(FadeOutCoroutine(fadeSettingsOverride));
+    }
+
+    private IEnumerator FadeOutCoroutine(MusicFadeSettings fadeSettingsOverride = null)
     {
         _isFading = true;
         var fadeSettings = fadeSettingsOverride ?? _defaultFadeSettings;
@@ -68,7 +72,7 @@ public class AudioPlayer : MonoBehaviour
 
             while (_audioSource.volume > 0f)
             {
-                await Task.Delay((int)(fadeSettings.UpdateDelayInSeconds * 1000f));
+                yield return new WaitForSeconds(fadeSettings.UpdateDelayInSeconds);
                 _audioSource.volume -= startingVolume * (fadeSettings.UpdateDelayInSeconds / fadeSettings.FadeTimeInSeconds);
             }
         }
@@ -78,7 +82,7 @@ public class AudioPlayer : MonoBehaviour
         _isFading = false;
     }
 
-    public async Task FadeInAsync(MusicFadeSettings fadeSettingsOverride = null)
+    public void FadeInAsync(MusicFadeSettings fadeSettingsOverride = null)
     {
         if (_customAudioClip == null)
         {
@@ -86,6 +90,11 @@ public class AudioPlayer : MonoBehaviour
             return;
         }
 
+        StartCoroutine(FadeInCoroutine());
+    }
+
+    private IEnumerator FadeInCoroutine(MusicFadeSettings fadeSettingsOverride = null)
+    {
         _isMuted = false;
         _isFading = true;
         var fadeSettings = fadeSettingsOverride ?? _defaultFadeSettings;
@@ -96,7 +105,7 @@ public class AudioPlayer : MonoBehaviour
         {
             while (_audioSource.volume < targetVolume)
             {
-                await Task.Delay((int)(fadeSettings.UpdateDelayInSeconds * 1000f));
+                yield return new WaitForSeconds(fadeSettings.UpdateDelayInSeconds);
                 _audioSource.volume += targetVolume * (fadeSettings.UpdateDelayInSeconds / fadeSettings.FadeTimeInSeconds);
             }
         }

@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Threading.Tasks;
+using System.Collections;
 using UnityEngine;
 
 public class GameManager : SingletonBehaviour<GameManager>
@@ -36,31 +36,41 @@ public class GameManager : SingletonBehaviour<GameManager>
         AssertSingleton(this);
     }
 
-    public async Task StartMainLoop()
+    public void StartMainLoop()
+    {
+        StartCoroutine(StartMainLoopCoroutine());
+    }
+
+    private IEnumerator StartMainLoopCoroutine()
     {
         _lost = false;
-
-        await Task.Delay(1500);
+        yield return new WaitForSeconds(1.5f);
         OnPrepareNewLevel?.Invoke();
-        await Task.Delay(1500);
-        await PlayCountdownAudioAsync();
+        yield return new WaitForSeconds(1.5f);
+        PlayCountdownAudio();
+        yield return new WaitForSeconds(3.5f);
 
         _startTime = Time.time;
         OnLevelStart?.Invoke();
     }
 
-    public async Task TriggerLevelFinish()
+    public void TriggerLevelFinish()
+    {
+        StartCoroutine(TriggerLevelFinishCoroutine());
+    }
+
+    private IEnumerator TriggerLevelFinishCoroutine()
     {
         _score++;
         OnLevelFinish?.Invoke();
-        await Task.Delay(_timeUntilRewindInMs);
+        yield return new WaitForSeconds(_timeUntilRewindInMs / 1000f);
         OnRewindBegin?.Invoke(_rewindDurationInMs);
-        AudioSettings.Instance.BasePitch = -1f;
-        await Task.Delay(_rewindDurationInMs);
+        //AudioSettings.Instance.BasePitch = -1f; // Does not work in web build...
+        yield return new WaitForSeconds(_rewindDurationInMs / 1000f);
         OnRewindEnd?.Invoke();
         AudioSettings.Instance.BasePitch = 1;
 
-        await StartMainLoop();
+        StartMainLoop();
     }
 
     public void TriggerGameOver()
@@ -85,14 +95,19 @@ public class GameManager : SingletonBehaviour<GameManager>
         return Time.time - _startTime;
     }
 
-    private async Task PlayCountdownAudioAsync()
+    private void PlayCountdownAudio()
+    {
+        StartCoroutine(PlayCountdownAudioCoroutine());
+    }
+
+    private IEnumerator PlayCountdownAudioCoroutine()
     {
         AudioPlayerSpawner.Instance.PlaySoundEffect(_countdownThreeAudio);
-        await Task.Delay(1000);
+        yield return new WaitForSeconds(1f);
         AudioPlayerSpawner.Instance.PlaySoundEffect(_countdownTwoAudio);
-        await Task.Delay(1000);
+        yield return new WaitForSeconds(1f);
         AudioPlayerSpawner.Instance.PlaySoundEffect(_countdownOneAudio);
-        await Task.Delay(1000);
+        yield return new WaitForSeconds(1f);
         AudioPlayerSpawner.Instance.PlaySoundEffect(_countdownGoAudio);
     }
 }

@@ -2,8 +2,8 @@
 
 public class StartGame : MonoBehaviour
 {
-    private async void Start()
+    private void Start()
     {
-        await GameManager.Instance.StartMainLoop();
+        GameManager.Instance.StartMainLoop();
     }
 }

@@ -1,20 +1,19 @@
-﻿using System.Threading.Tasks;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class MusicStarter : MonoBehaviour
 {
     [SerializeField] private MusicFadeSettings _fadeSettings;
     [SerializeField] private CustomAudioClip _musicToPlayOnStart;
 
-    private async void Start()
+    private void Start()
     {
         if (_musicToPlayOnStart == null) { return; }
 
-        await PlayNewMusicAsync(_musicToPlayOnStart, _fadeSettings);
+        PlayNewMusicAsync(_musicToPlayOnStart, _fadeSettings);
     }
 
-    public async Task PlayNewMusicAsync(CustomAudioClip music, MusicFadeSettings overrideFadeSettings = null)
+    public void PlayNewMusicAsync(CustomAudioClip music, MusicFadeSettings overrideFadeSettings = null)
     {
-        await AudioPlayerSpawner.Instance.PlayNewMusicAsync(music, overrideFadeSettings);
+        AudioPlayerSpawner.Instance.PlayNewMusicAsync(music, overrideFadeSettings);
     }
 }

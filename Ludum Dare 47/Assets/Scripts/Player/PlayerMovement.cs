@@ -148,7 +148,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    private async void OnTriggerEnter2D(Collider2D collider)
+    private void OnTriggerEnter2D(Collider2D collider)
     {
         if (collider.CompareTag("DashBox"))
         {
@@ -171,7 +171,7 @@ public class PlayerMovement : MonoBehaviour
         if (_input is AutomaticPlayerInput) { return; }
 
         _hasFinishedLevel = true;
-        await GameManager.Instance.TriggerLevelFinish();
+        GameManager.Instance.TriggerLevelFinish();
     }
 
     private IEnumerator RewindToSpawnPoint(int rewindDurationInMs)
